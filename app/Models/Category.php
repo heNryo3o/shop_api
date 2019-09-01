@@ -5,22 +5,22 @@ namespace App\Models;
 class Category extends PublicModel
 {
 
+    protected $fillable = [
+        'name',
+        'parent_id',
+        'thumb',
+        'status',
+        'updated_at',
+        'created_at',
+        'level',
+        'admin_id'
+    ];
+
     protected $rememberCacheTag = 'Category';
 
-    protected $appends = ['type_name'];
-
-    public function getTypeNameAttribute()
+    public function admin()
     {
-
-        switch ($this->type){
-            case 'news':
-                return '新闻';
-            case 'help':
-                return '帮助文章';
-            default:
-                return '分类';
-        }
-
+        return $this->belongsTo(Admin::class);
     }
 
 }

@@ -10,7 +10,12 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
 
-        return [];
+        request()->offsetSet('admin_id', auth('admin')->id());
+
+        return [
+            'name' => 'required',
+            'status' => 'required | int',
+        ];
 
     }
 

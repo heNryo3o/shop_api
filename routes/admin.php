@@ -74,6 +74,7 @@ Route::post('/cases/change-status','CasesController@changeStatus');
 // 分类模块
 
 Route::get('/category/index','CategoryController@index');
+Route::get('/category/parent-options','CategoryController@parentOptions');
 
 Route::post('/category/create','CategoryController@create');
 Route::post('/category/edit','CategoryController@edit');
@@ -182,5 +183,7 @@ Route::post('/user/create','UserController@create');
 Route::post('/user/edit','UserController@edit');
 Route::post('/user/destroy','UserController@destroy');
 Route::post('/user/change-status','UserController@changeStatus');
+
+Route::post('/system/upload','SystemController@upload');
 
 

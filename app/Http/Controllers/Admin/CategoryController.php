@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 
 class CategoryController extends Controller
 {
@@ -20,7 +21,7 @@ class CategoryController extends Controller
 
         $order_type = $request->input('order_type', 'desc');
 
-        $list = Category::filter($request->all())->remember(10080)->orderBy($order_column, $order_type)->paginate($request->limit);
+        $list = Category::filter($request->all())->with('admin:admins.id,admins.true_name')->remember(10080)->orderBy($order_column, $order_type)->paginate($request->limit);
 
         return $this->success(CategoryResource::collection($list));
 
@@ -29,7 +30,23 @@ class CategoryController extends Controller
     public function create(CategoryRequest $request)
     {
 
-        Category::create($request->all());
+        $data = $request->all();
+
+        if($request->parent_id){
+
+            $data['parent_id'] = Arr::last($request->parent_id);
+
+            $parent = Category::where('id',$data['parent_id'])->get('level')->first();
+
+            $data['level'] = $parent['level'] + 1;
+
+        }else{
+
+            $data['level'] = 1;
+
+        }
+
+        Category::create($data);
 
         return $this->success();
 
@@ -38,7 +55,23 @@ class CategoryController extends Controller
     public function edit(CategoryRequest $request)
     {
 
-        Category::find($request->id)->update($request->all());
+        $data = $request->all();
+
+        if($request->parent_id){
+
+            $data['parent_id'] = Arr::last($request->parent_id);
+
+            $parent = Category::where('id',$data['parent_id'])->get('level')->first();
+
+            $data['level'] = $parent['level'] + 1;
+
+        }else{
+
+            $data['level'] = 1;
+
+        }
+
+        Category::find($request->id)->update($data);
 
         return $this->success();
 
@@ -59,6 +92,58 @@ class CategoryController extends Controller
         Category::destroy($request->id);
 
         return $this->success();
+
+    }
+
+
+    public function parentOptions()
+    {
+
+        $data = [];
+
+        $parent = Category::where(['level'=>1])->remember(10080)->get(['id','name'])->toArray();
+
+        foreach ($parent as $k => $v){
+
+            $data[$k] = $v;
+
+            $child = Category::where(['parent_id'=>$v['id']])->remember(10080)->get(['id','name']);
+
+            if($child){
+
+                foreach ($child->toArray() as $vk => $vv){
+
+                    $data[$k]['children'][$vk] = $vv;
+
+                    $children = Category::where(['parent_id'=>$vv['id']])->remember(10080)->get(['id','name']);
+
+                    if($children){
+
+                        foreach ($children->toArray() as $vvk => $vvv){
+
+                            $data[$k]['children'][$vk]['children'][$vvk] = $vvv;
+
+                        }
+
+                    }else{
+
+                        $data[$k]['children'][$vk]['children'] = [];
+
+                    }
+
+                }
+
+            }else{
+
+                $data[$k]['children'] = [];
+
+            }
+
+        }
+
+        $options = $this->dealOptions($data,'id','name');
+
+        return $this->success($options);
 
     }
 

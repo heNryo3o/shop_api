@@ -13,16 +13,12 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'describe' => $this->describe,
             'created_at' => $this->created_at->toDateTimeString(),
             'parent_id' => $this->parent_id,
-            'order' => $this->order,
-            'type' => $this->type,
-            'type_name' => $this->type_name,
             'admin_id' => $this->admin_id,
-            'pinyin' => $this->pinyin,
+            'admin_name' => $this->admin ? $this->admin->true_name : '',
             'level' => $this->level,
-            'status' => $this->status,
+            'status' => $this->status
         ];
 
     }
