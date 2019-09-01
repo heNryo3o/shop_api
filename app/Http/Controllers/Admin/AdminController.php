@@ -29,13 +29,11 @@ class AdminController extends Controller
     public function create(AdminRequest $request)
     {
 
-        $admin = Admin::create($request->all());
+        $data = $request->all();
 
-        $password_salt = Str::random(6);
+        $data['password'] = bcrypt(substr($data['username'],-6));
 
-        $password = $this->userPasswordEncode($admin->mobile, $admin->password_salt, $admin->id);
-
-        $admin->update(['password' => $password, 'password_salt' => $password_salt]);
+        $admin = Admin::create($data);
 
         $admin->roles()->sync($request->roles_id);
 

@@ -33,4 +33,13 @@ class RoleRequest extends FormRequest
 
     }
 
+    public function attributes()
+    {
+        return [
+            'name' => '角色名',
+            'describe' => '角色描述',
+            'permissions' => '权限项'
+        ];
+    }
+
 }

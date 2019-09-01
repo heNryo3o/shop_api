@@ -8,16 +8,12 @@ class Admin extends PublicModel
     protected $fillable = [
         'true_name',
         'username',
-        'mobile',
         'avatar',
-        'department',
-        'duty',
         'password',
         'password_salt',
         'status',
         'created_at',
-        'updated_at',
-        'current_token'
+        'updated_at'
     ];
 
     protected $rememberCacheTag = 'Admin';

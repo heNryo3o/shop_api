@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Admin;
 
-use App\Models\Permission;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminResource extends JsonResource
@@ -27,8 +26,6 @@ class AdminResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'true_name' => $this->true_name,
-            'mobile' => $this->mobile,
-            'department' => $this->department,
             'roles_id' => $roles_id,
             'roles' => $permissions_key,
             'roles_name' => $roles_name,
