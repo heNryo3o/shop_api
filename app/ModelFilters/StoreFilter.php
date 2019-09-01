@@ -2,7 +2,7 @@
 
 namespace App\ModelFilters;
 
-class UserFilter extends PublicFilter
+class StoreFilter extends PublicFilter
 {
     /**
      * Related Models that have ModelFilters as well as the method on the ModelFilter
@@ -13,9 +13,14 @@ class UserFilter extends PublicFilter
 
     public $relations = [];
 
-    public function nickname($value)
+    public function name($value)
     {
-        return $this->whereLike('nickname',$value);
+        return $this->whereLike('name',$value);
+    }
+
+    public function vipLevel($value)
+    {
+        return $this->related('user','vip_level','=',$value);
     }
 
 }

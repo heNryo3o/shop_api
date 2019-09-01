@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         if($request->parent_id){
 
-            $data['parent_id'] = Arr::last($request->parent_id);
+            $data['parent_id'] = is_array($data['parent_id']) ? Arr::last($request->parent_id) : $data['parent_id'];
 
             $parent = Category::where('id',$data['parent_id'])->get('level')->first();
 
@@ -59,7 +59,7 @@ class CategoryController extends Controller
 
         if($request->parent_id){
 
-            $data['parent_id'] = Arr::last($request->parent_id);
+            $data['parent_id'] = is_array($data['parent_id']) ? Arr::last($request->parent_id) : $data['parent_id'];
 
             $parent = Category::where('id',$data['parent_id'])->get('level')->first();
 

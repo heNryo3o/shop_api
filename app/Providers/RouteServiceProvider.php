@@ -30,6 +30,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapAdminRoutes();
 
+        $this->mapSellerRoutes();
+
     }
 
     protected function mapAdminRoutes()
@@ -38,6 +40,14 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('auth:admin')
             ->namespace('App\Http\Controllers\Admin')
             ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapSellerRoutes()
+    {
+        Route::prefix('seller')
+            ->middleware('auth:seller')
+            ->namespace('App\Http\Controllers\Seller')
+            ->group(base_path('routes/seller.php'));
     }
 
 }

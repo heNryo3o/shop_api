@@ -40,6 +40,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
+        'seller' => [
+            'driver' => 'jwt',
+            'provider' => 'sellers',
+        ],
 //        'pc' => [
 //            'driver' => 'jwt',
 //            'provider' => 'users',
@@ -72,6 +76,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\JwtAdmin::class,
+        ],
+        'sellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\JwtSeller::class,
         ],
 
         // 'users' => [

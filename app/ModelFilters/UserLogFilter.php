@@ -13,4 +13,9 @@ class UserLogFilter extends PublicFilter
 
     public $relations = [];
 
+    public function type($value)
+    {
+        return $this->where('type',$value);
+    }
+
 }
