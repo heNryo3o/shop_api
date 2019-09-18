@@ -20,7 +20,11 @@ class Authenticate extends Middleware
             return;
         }
 
-        $white_list = ['seller/system/upload'];
+        $white_list = [
+            'seller/system/upload',
+            'seller/category/options',
+            'seller/store/create',
+        ];
 
         if(in_array($uri,$white_list)){
             return;

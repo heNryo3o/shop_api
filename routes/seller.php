@@ -184,6 +184,8 @@ Route::post('/user/edit','UserController@edit');
 Route::post('/user/destroy','UserController@destroy');
 Route::post('/user/change-status','UserController@changeStatus');
 
+Route::get('/category/options','CategoryController@options');
+
 Route::post('/system/upload','SystemController@upload');
 
 

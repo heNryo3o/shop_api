@@ -65,7 +65,8 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
-        'oss'=>[
+
+        'oss' => [
             'driver'        => 'oss',
             'access_id'     => env('OSS_ACCESS_ID'),
             'access_key'    => env('OSS_ACCESS_KEY'),
