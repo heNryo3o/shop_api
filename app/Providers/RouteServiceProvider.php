@@ -32,6 +32,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapSellerRoutes();
 
+        $this->mapWeappRoutes();
+
     }
 
     protected function mapAdminRoutes()
@@ -48,6 +50,14 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('auth:seller')
             ->namespace('App\Http\Controllers\Seller')
             ->group(base_path('routes/seller.php'));
+    }
+
+    protected function mapWeappRoutes()
+    {
+        Route::prefix('weapp')
+            ->middleware('auth:weapp')
+            ->namespace('App\Http\Controllers\Weapp')
+            ->group(base_path('routes/weapp.php'));
     }
 
 }

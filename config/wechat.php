@@ -92,6 +92,7 @@ return [
     /*
      * 小程序
      */
+
     // 'mini_program' => [
     //     'default' => [
     //         'app_id'  => env('WECHAT_MINI_PROGRAM_APPID', ''),

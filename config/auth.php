@@ -44,6 +44,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'sellers',
         ],
+        'weapp' => [
+            'driver' => 'jwt',
+            'provider' => 'weapp',
+        ],
 //        'pc' => [
 //            'driver' => 'jwt',
 //            'provider' => 'users',
@@ -80,6 +84,10 @@ return [
         'sellers' => [
             'driver' => 'eloquent',
             'model' => App\Models\JwtSeller::class,
+        ],
+        'weapp' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\JwtWeapp::class,
         ],
 
         // 'users' => [
