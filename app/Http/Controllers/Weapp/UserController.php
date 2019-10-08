@@ -6,59 +6,48 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\LoginRequest;
 use App\Http\Resources\Seller\StoreResource;
 use App\Models\Store;
+use App\Models\User;
 use EasyWeChat\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTAuth;
 
 class UserController extends Controller
 {
 
-    public function login(LoginRequest $request, JWTAuth $jwt_auth)
+    public function token(Request $request)
     {
 
         $app = Factory::miniProgram(config('wechat.mini_program.default'));
 
-        $data = $app->auth->session($request->code);
+        $auth = $app->auth->session($request->code);
 
-        var_dump($data);
+        $open_id = $auth['openid'];
 
-//        $username = $request->input('username');
-//
-//        $password = $request->input('password');
-//
-//        $admin = Store::where(['username' => $username, 'status' => 1])->first();
-//
-//        if (empty($admin)) {
-//            return $this->failed('您的管理员账号已被停用');
-//        }
-//
-//        $token = Auth::guard('seller')->attempt(['username'=>$username,'password'=>$password]);
-//
-//        if(!$token){
-//            return $this->failed('用户名或密码错误，请重试！');
-//        }
-//
-//        return $this->success(['token' => 'Bearer '.$token]);
+        $user = User::where(['open_id'=>$open_id])->first();
+
+        if(!$user){
+
+            $user = User::create(['open_id'=>$open_id]);
+
+        }
+
+        $token = auth('weapp')->tokenById($user->id);
+
+        $user_info = $user->toArray();
+
+        return $this->success(['open_id'=>$open_id,'token'=>'Bearer '.$token,'userInfo'=>$user_info]);
 
     }
 
-    public function logout()
+    public function edit(Request $request)
     {
 
-        auth('seller')->logout();
+        $user_id = auth('weapp')->id();
 
-        return $this->success();
+        User::find($user_id)->update(['avatar'=>$request->avatar,'nickname'=>$request->nickname]);
 
-    }
-
-    public function info()
-    {
-
-        $id = auth('seller')->id();
-
-        $user = Store::where('id',$id)->first();
-
-        return $this->success(new StoreResource($user));
+        return $this->success(['user_info'=>User::find($user_id)]);
 
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\JwtWeapp;
+use App\Models\User;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -13,11 +15,21 @@ class Authenticate extends Middleware
         $uri = $request->route()->uri;
 
         $white_list = [
-            'weapp/user/login'
+            'weapp/user/token'
         ];
 
         if(in_array($uri,$white_list)){
             return;
+        }
+
+        if(substr($uri,0,5 ) == 'weapp'){
+
+            $user = User::where(['open_id'=>$request->open_id])->first();
+
+            auth('weapp')->setUser(JwtWeapp::find($user->id));
+
+            return;
+
         }
 
         $white_list = [
