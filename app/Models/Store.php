@@ -22,9 +22,12 @@ class Store extends PublicModel
         'area',
         'address',
         'bank_card',
-        'user_id',
         'collect',
+        'user_id',
         'logo',
+        'thumb',
+        'evalue',
+        'is_online'
     ];
 
     protected $casts = [
