@@ -60,7 +60,7 @@ class StoreController extends Controller
 
     public function productList(Request $request)
     {
-        
+
         $list = Product::where(['status'=>1,'store_id'=>$request->id])->orderBy('id','desc')->get();
 
         return $this->success(ProductResource::collection($list));
