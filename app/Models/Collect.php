@@ -2,25 +2,15 @@
 
 namespace App\Models;
 
-class Product extends PublicModel
+class Collect extends PublicModel
 {
 
     protected $fillable = [
-        'name',
+        'type',
+        'user_id',
         'created_at',
         'updated_at',
-        'price',
-        'retail_1',
-        'retail_2',
-        'thumb',
-        'content',
-        'category_id',
-        'sold',
-        'browse',
-        'store_id',
-        'status',
-        'attaches',
-        'collect'
+        'item_id',
     ];
 
     protected $casts = [

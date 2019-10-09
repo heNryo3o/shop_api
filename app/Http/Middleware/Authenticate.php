@@ -26,9 +26,13 @@ class Authenticate extends Middleware
 
             $user = User::where(['open_id'=>$request->open_id])->first();
 
-            auth('weapp')->setUser(JwtWeapp::find($user->id));
+            if($user){
 
-            return;
+                auth('weapp')->setUser(JwtWeapp::find($user->id));
+
+                return;
+
+            }
 
         }
 

@@ -21,13 +21,25 @@ class Store extends PublicModel
         'category',
         'area',
         'address',
-        'bank_card'
+        'bank_card',
+        'user_id',
+        'collect',
+        'logo',
     ];
 
     protected $casts = [
         'area'=>'json',
         'category' => 'json'
     ];
+
+    protected $appends = [
+        'product_num'
+    ];
+
+    public function getProductNumAttribute()
+    {
+        return Product::where(['store_id'=>$this->id,'status'=>1])->count();
+    }
 
     public function products()
     {
