@@ -36,7 +36,8 @@ class Store extends PublicModel
     ];
 
     protected $appends = [
-        'product_num'
+        'product_num',
+        'category_name'
     ];
 
     public function getProductNumAttribute()
@@ -47,6 +48,15 @@ class Store extends PublicModel
     public function products()
     {
         return $this->hasMany(Store::class);
+    }
+
+    public function getCategoryNameAttribute()
+    {
+
+        $category = Category::find($this->category_id);
+
+        return $category ? $category->name : '';
+
     }
 
 }

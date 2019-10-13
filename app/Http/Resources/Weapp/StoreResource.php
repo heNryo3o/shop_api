@@ -11,6 +11,7 @@ class StoreResource extends JsonResource
     {
 
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'mobile' => $this->mobile,
             'address' => $this->address,
@@ -18,7 +19,10 @@ class StoreResource extends JsonResource
             'user_id' => $this->user_id,
             'logo' => $this->logo,
             'thumb' => $this->thumb,
-            'evalue' => $this->evalue
+            'evalue' => $this->evalue,
+            'shangquan'=>$this->shangquan,
+            'category_name'=>$this->category_name,
+            'average_cost' => $this->average_cost
         ];
 
     }

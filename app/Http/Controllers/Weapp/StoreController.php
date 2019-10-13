@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Weapp\ProductResource;
 use App\Http\Resources\Weapp\StoreResource;
 use App\Models\Collect;
+use App\Models\Evalue;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -19,6 +21,30 @@ class StoreController extends Controller
         $store = Store::find($request->id)->toArray();
 
         $store['is_collect'] = Collect::where(['type'=>2,'user_id'=>auth('weapp')->id(),'item_id'=>$store['id']])->count() > 0 ? 1 : 0;
+
+        $evalue_list = Evalue::where('user_id',$store['user_id'])->orderBy('id','desc')->limit(2)->get();
+
+        if($evalue_list){
+
+            $evalue_list = $evalue_list->toArray();
+
+            foreach ($evalue_list as $k => &$v){
+
+                $evalue_user = User::find($v['user_id']);
+
+                $v['avatar'] = $evalue_user->avatar;
+
+                $v['nickname'] = $evalue_user->nickname;
+
+            }
+
+        }else{
+
+            $evalue_list = [];
+
+        }
+
+        $store['evalue'] = $evalue_list;
 
         return $this->success($store);
 

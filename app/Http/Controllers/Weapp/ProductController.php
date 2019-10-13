@@ -106,7 +106,9 @@ class ProductController extends Controller
     public function evalueList(Request $request)
     {
 
-        $list = Evalue::where(['product_id'=>$request->product_id])->orderBy('id','desc')->get();
+        $condition = $request->product_id > 0 ? ['product_id'=>$request->product_id] : ['store_id' => $request->store_id];
+
+        $list = Evalue::where($condition)->orderBy('id','desc')->get();
 
         $result = [];
 

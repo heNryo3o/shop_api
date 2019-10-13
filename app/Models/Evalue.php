@@ -12,7 +12,8 @@ class Evalue extends PublicModel
         'updated_at',
         'product_id',
         'content',
-        'attaches'
+        'attaches',
+        'store_id'
     ];
 
     protected $casts = [
