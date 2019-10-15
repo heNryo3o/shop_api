@@ -21,4 +21,9 @@ class User extends PublicModel
         return $this->hasMany(PushLog::class);
     }
 
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
 }

@@ -34,4 +34,9 @@ class Product extends PublicModel
         return $this->belongsTo(Store::class);
     }
 
+    public function skus()
+    {
+        return $this->hasMany(ProductSku::class);
+    }
+
 }
