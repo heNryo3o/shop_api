@@ -27,6 +27,11 @@ Route::get('/store/info','StoreController@info');
 Route::get('/store/index','StoreController@index');
 Route::get('/store/product-list','StoreController@productList');
 
+Route::post('/order/cart-create','OrderController@cartCreate');
+
+Route::get('/order/info','OrderController@info');
+Route::get('/order/submit','OrderController@submit');
+
 Route::post('/store/collect','StoreController@collect');
 
 
