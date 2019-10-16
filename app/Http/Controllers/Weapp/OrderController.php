@@ -24,11 +24,25 @@ class OrderController extends Controller
             'total_amount' => $request->total_amount,
         ];
 
-        $order = Order::create($order_data);
-
         $list = CartItem::whereIn('id',$request->cart_item_ids)->get()->toArray();
 
         foreach($list as $k => $v){
+
+            $sku = ProductSku::find($v['product_sku_id']);
+
+            if($v['amount'] > $sku->stock){
+                return $this->failed('您选购的'.Product::find($v['product_id'])->name.'商品'.$sku->title.'型号库存仅剩余'.$sku->stock.'件，无法下单');
+            }
+
+        }
+
+        $order = Order::create($order_data);
+
+        foreach($list as $k => $v){
+
+            $sku = ProductSku::find($v['product_sku_id']);
+
+            $sku->update(['stock'=>($sku->stock-$v['amount'])]);
 
             $item_data = [
                 'order_id' => $order->id,
@@ -36,7 +50,7 @@ class OrderController extends Controller
                 'product_sku_id' => $v['product_sku_id'],
                 'store_id' => $v['store_id'],
                 'amount' => $v['amount'],
-                'price' => ProductSku::find($v['product_sku_id'])->price,
+                'price' => $sku->price,
                 'user_id' => $user_id
             ];
 
