@@ -15,7 +15,9 @@ class Authenticate extends Middleware
         $uri = $request->route()->uri;
 
         $white_list = [
-            'weapp/user/token'
+            'weapp/user/token',
+            'seller/login/login',
+            'admin/login/login',
         ];
 
         if(in_array($uri,$white_list)){
