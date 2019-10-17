@@ -36,7 +36,9 @@ class UserController extends Controller
 
         $user_info = $user->toArray();
 
-        return $this->success(['open_id'=>$open_id,'token'=>'Bearer '.$token,'userInfo'=>$user_info]);
+        $is_new = isset($user_info['nickname']) && $user_info['nickname'] ? 0 : 1;
+
+        return $this->success(['open_id'=>$open_id,'token'=>'Bearer '.$token,'userInfo'=>$user_info,'is_new'=>$is_new]);
 
     }
 
