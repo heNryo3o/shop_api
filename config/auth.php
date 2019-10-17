@@ -42,7 +42,7 @@ return [
         ],
         'seller' => [
             'driver' => 'jwt',
-            'provider' => 'sellers',
+            'provider' => 'seller',
         ],
         'weapp' => [
             'driver' => 'jwt',
@@ -81,7 +81,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\JwtAdmin::class,
         ],
-        'sellers' => [
+        'seller' => [
             'driver' => 'eloquent',
             'model' => App\Models\JwtSeller::class,
         ],
