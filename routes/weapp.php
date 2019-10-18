@@ -34,4 +34,6 @@ Route::get('/order/submit','OrderController@submit');
 
 Route::post('/store/collect','StoreController@collect');
 
+Route::get('/system/chat-log','SystemController@chatLog');
+
 

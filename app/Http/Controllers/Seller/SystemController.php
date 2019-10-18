@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use JMessage\IM\Report;
+use JMessage\JMessage;
 
 class SystemController extends Controller
 {

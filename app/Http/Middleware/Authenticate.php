@@ -42,6 +42,7 @@ class Authenticate extends Middleware
             'seller/system/upload',
             'seller/category/options',
             'seller/store/create',
+            'weapp/system/chat-log',
         ];
 
         if(in_array($uri,$white_list)){

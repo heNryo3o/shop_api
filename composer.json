@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "illuminatech/validation-composite": "^1.0",
         "jacobcyl/ali-oss-storage": "^2.1",
+        "jiguang/jmessage": "^1.1",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "medz/cors": "^1.4",

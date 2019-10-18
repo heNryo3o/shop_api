@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d59750049c0438368d1d754403e36883",
+    "content-hash": "24ebed5394295e2cbe6baac28c89d747",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -1538,6 +1538,50 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "jiguang/jmessage",
+            "version": "1.1.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jpush/jmessage-api-php-client.git",
+                "reference": "76febabfd673a9428a192adb8cd5a2e1b7d2c7a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jpush/jmessage-api-php-client/zipball/76febabfd673a9428a192adb8cd5a2e1b7d2c7a0",
+                "reference": "76febabfd673a9428a192adb8cd5a2e1b7d2c7a0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JMessage\\": "src/JMessage/"
+                }
+            },
+            "notification-url": "https://packagist.jp/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JiGuang",
+                    "email": "support@jpush.cn",
+                    "homepage": "https://www.jiguang.cn"
+                }
+            ],
+            "description": "JMessage's officially supported PHP client library for accessing JMessage APIs.",
+            "homepage": "https://github.com/jpush/jmessage-api-php-client",
+            "keywords": [
+                "api client",
+                "jiguang",
+                "jmessage"
+            ],
+            "time": "2018-12-11T02:07:31+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
