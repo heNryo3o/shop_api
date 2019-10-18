@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\StoreResource;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use JMessage\IM\Report;
 
 class StoreController extends Controller
 {
@@ -20,9 +21,18 @@ class StoreController extends Controller
 
         $order_type = $request->input('order_type', 'desc');
 
-        $list = Store::filter($request->all())->with('user:users.id,users.mobile')->remember(10080)->orderBy($order_column, $order_type)->paginate($request->limit);
+        $list = Store::filter($request->all())->orderBy($order_column, $order_type)->paginate($request->limit);
 
         return $this->success(StoreResource::collection($list));
+
+    }
+
+    public function info(Request $request)
+    {
+
+        $info = Store::find($request->id);
+
+        return $this->success(new StoreResource($info));
 
     }
 

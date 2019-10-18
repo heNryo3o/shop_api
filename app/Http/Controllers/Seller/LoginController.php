@@ -19,10 +19,22 @@ class LoginController extends Controller
 
         $password = $request->input('password');
 
-        $admin = Store::where(['username' => $username, 'status' => 1])->first();
+        $admin = Store::where(['username' => $username])->first();
 
         if (empty($admin)) {
-            return $this->failed('您的管理员账号已被停用');
+            return $this->failed('用户名或密码错误');
+        }
+
+        if($admin->status == 1){
+            return $this->failed('您的店铺正在审核中，请耐心等待');
+        }
+
+        if($admin->status == 3){
+            return $this->failed('您的店铺信息未通过审核');
+        }
+
+        if($admin->status == 5){
+            return $this->failed('您的店铺已被管理员停用');
         }
 
         $token = Auth::guard('seller')->attempt(['username'=>$username,'password'=>$password]);

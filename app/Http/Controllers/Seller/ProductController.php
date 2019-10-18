@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use JMessage\IM\User;
 use JMessage\JMessage;
 
-class StoreController extends Controller
+class ProductController extends Controller
 {
 
     public function index(Request $request)

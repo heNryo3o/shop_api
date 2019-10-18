@@ -23,4 +23,9 @@ class StoreFilter extends PublicFilter
         return $this->related('user','vip_level','=',$value);
     }
 
+    public function mobile($value)
+    {
+        return $this->whereLike('mobile',$value);
+    }
+
 }

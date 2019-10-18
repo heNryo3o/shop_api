@@ -10,6 +10,7 @@ use App\Models\User;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use JMessage\JMessage;
 use Tymon\JWTAuth\JWTAuth;
 
 class UserController extends Controller
@@ -30,6 +31,10 @@ class UserController extends Controller
 
             $user = User::create(['open_id'=>$open_id]);
 
+            $jim = new \JMessage\IM\User(new JMessage(config('jim.key'), config('jim.secret')));
+
+            $jim->register('user_'.$user->id, '123456');
+
         }
 
         $token = auth('weapp')->tokenById($user->id);
@@ -48,6 +53,10 @@ class UserController extends Controller
         $user_id = auth('weapp')->id();
 
         User::find($user_id)->update(['avatar'=>$request->avatar,'nickname'=>$request->nickname]);
+
+        $jim = new \JMessage\IM\User(new JMessage(config('jim.key'), config('jim.secret')));
+
+        $jim->update('user_'.$user_id, ['nickname' => $request->nickname, 'avatar' => $request->avatar]);
 
         return $this->success(['user_info'=>User::find($user_id)]);
 
