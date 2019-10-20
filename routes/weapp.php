@@ -30,6 +30,7 @@ Route::get('/store/product-list','StoreController@productList');
 Route::post('/order/cart-create','OrderController@cartCreate');
 
 Route::get('/order/info','OrderController@info');
+Route::get('/order/index','OrderController@index');
 Route::get('/order/submit','OrderController@submit');
 
 Route::post('/store/collect','StoreController@collect');

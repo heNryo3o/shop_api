@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Weapp;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Weapp\OrderResource;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -12,6 +13,19 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+
+    public function index(Request $request)
+    {
+
+        $query = Order::where('user_id',auth('weapp')->id());
+
+        $query = $request->status > 0 ? $query->where('status',$request->status) : $query;
+
+        $list = $query->orderBy('id','desc')->get();
+
+        return $this->success(OrderResource::collection($list));
+
+    }
 
     public function cartCreate(Request $request)
     {
