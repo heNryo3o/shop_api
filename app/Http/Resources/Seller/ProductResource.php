@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Weapp;
+namespace App\Http\Resources\Seller;
 
 use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,6 +28,9 @@ class ProductResource extends JsonResource
             'browse' => $this->browse,
             'store_id' => $this->store_id,
             'status' => $this->status,
+            'skus' => $this->skus,
+            'category' => $this->category,
+            'attention' => $this->attention,
             'is_online' => $this->is_online,
             'is_dapai' => $this->is_dapai
         ];

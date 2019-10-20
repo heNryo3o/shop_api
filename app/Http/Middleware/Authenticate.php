@@ -40,6 +40,7 @@ class Authenticate extends Middleware
 
         $white_list = [
             'seller/system/upload',
+            'admin/system/upload',
             'seller/category/options',
             'seller/store/create',
             'weapp/system/chat-log',

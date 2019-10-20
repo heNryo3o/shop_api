@@ -19,7 +19,9 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        $query = Product::where(['status' => 1]);
+        $is_online = $request->is_online == 2 ? 2 : 1;
+
+        $query = Product::where(['status' => 1,'is_online' => $is_online]);
 
         $query = $request->category_id > 0 ? $query->where('category_id', $request->category_id) : $query;
 
@@ -100,6 +102,8 @@ class ProductController extends Controller
         $product['store_product_num'] = $store->product_num;
 
         $product['store_logo'] = $store->logo;
+
+        $product['store_address'] = $store->address;
 
         $product['skus'] = ProductSku::where('product_id', $product['id'])->get()->toArray();
 

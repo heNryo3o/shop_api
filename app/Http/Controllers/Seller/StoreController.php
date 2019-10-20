@@ -15,19 +15,6 @@ use JMessage\JMessage;
 class StoreController extends Controller
 {
 
-    public function index(Request $request)
-    {
-
-        $order_column = $request->input('order_column', 'id');
-
-        $order_type = $request->input('order_type', 'desc');
-
-        $list = Store::filter($request->all())->with('user:users.id,users.mobile')->remember(10080)->orderBy($order_column, $order_type)->paginate($request->limit);
-
-        return $this->success(StoreResource::collection($list));
-
-    }
-
     public function create(StoreRequest $request)
     {
 
@@ -54,7 +41,13 @@ class StoreController extends Controller
     public function edit(StoreRequest $request)
     {
 
-        Store::find($request->id)->update($request->all());
+        $store = Store::find($request->id);
+
+        $data = $request->all();
+
+        $data['status'] = $store->status == 2 ? 4 : $store->status;
+
+        $store->update($data);
 
         $jim = new User(new JMessage(config('jim.key'), config('jim.secret')));
 
@@ -79,15 +72,6 @@ class StoreController extends Controller
     {
 
         Store::find($request->id)->update(['status'=>$request->status]);
-
-        return $this->success();
-
-    }
-
-    public function destroy(DestroyRequest $request)
-    {
-
-        Store::destroy($request->id);
 
         return $this->success();
 

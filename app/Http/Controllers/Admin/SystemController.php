@@ -3,12 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class SystemController extends Controller
 {
+
+    public function info()
+    {
+
+        $setting = Setting::find(1);
+
+        return $this->success($setting);
+
+    }
+
+    public function saveBanner(Request $request)
+    {
+
+        Setting::find(1)->update($request->all());
+
+        return $this->success();
+    }
 
     public function upload(Request $request)
     {

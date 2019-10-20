@@ -36,12 +36,15 @@ class Store extends PublicModel
         'money',
         'money_block',
         'money_hold',
-        'money_total'
+        'money_total',
+        'fuli',
+        'open_time'
     ];
 
     protected $casts = [
         'area'=>'json',
-        'category' => 'json'
+        'category' => 'json',
+        'fuli' => 'json'
     ];
 
     protected $appends = [

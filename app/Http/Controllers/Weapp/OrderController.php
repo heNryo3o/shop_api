@@ -56,7 +56,7 @@ class OrderController extends Controller
 
             OrderItem::create($item_data);
 
-            CartItem::find($v['id'])->delete();
+//            CartItem::find($v['id'])->delete();
 
         }
 

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\DestroyRequest;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
 use App\Models\Category;
+use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
@@ -102,6 +103,57 @@ class CategoryController extends Controller
         $data = [];
 
         $parent = Category::where(['level'=>1])->remember(10080)->get(['id','name'])->toArray();
+
+        foreach ($parent as $k => $v){
+
+            $data[$k] = $v;
+
+            $child = Category::where(['parent_id'=>$v['id']])->remember(10080)->get(['id','name']);
+
+            if($child){
+
+                foreach ($child->toArray() as $vk => $vv){
+
+                    $data[$k]['children'][$vk] = $vv;
+
+                    $children = Category::where(['parent_id'=>$vv['id']])->remember(10080)->get(['id','name']);
+
+                    if($children){
+
+                        foreach ($children->toArray() as $vvk => $vvv){
+
+                            $data[$k]['children'][$vk]['children'][$vvk] = $vvv;
+
+                        }
+
+                    }else{
+
+                        $data[$k]['children'][$vk]['children'] = [];
+
+                    }
+
+                }
+
+            }else{
+
+                $data[$k]['children'] = [];
+
+            }
+
+        }
+
+        $options = $this->dealOptions($data,'id','name');
+
+        return $this->success($options);
+
+    }
+
+    public function subOptions(Request $request)
+    {
+
+        $data = [];
+
+        $parent = Category::where(['level'=>2,'parent_id'=>$request->is_online])->remember(10080)->get(['id','name'])->toArray();
 
         foreach ($parent as $k => $v){
 

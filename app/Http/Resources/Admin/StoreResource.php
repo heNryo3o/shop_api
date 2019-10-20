@@ -39,7 +39,9 @@ class StoreResource extends JsonResource
             'money' => $this->money,
             'money_block' => $this->money_block,
             'money_hold' => $this->money_hold,
-            'money_total' => $this->money_total
+            'money_total' => $this->money_total,
+            'open_time' => $this->open_time,
+            'fuli' => $this->fuli ? $this->fuli : []
         ];
 
     }

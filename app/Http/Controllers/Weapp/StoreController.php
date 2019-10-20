@@ -88,7 +88,7 @@ class StoreController extends Controller
     public function index(Request $request)
     {
 
-        $query = Store::where(['status'=>1,'is_online'=>2]);
+        $query = Store::where(['status'=>4,'is_online'=>2]);
 
         $query = $request->category_id > 0 ? $query->where('category_id',$request->category_id) : $query;
 

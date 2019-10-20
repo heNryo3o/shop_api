@@ -56,6 +56,7 @@ Route::post('/area/change-status','AreaController@changeStatus');
 // 分类模块
 
 Route::get('/category/index','CategoryController@index');
+Route::get('/category/sub-options','CategoryController@subOptions');
 Route::get('/category/parent-options','CategoryController@parentOptions');
 
 Route::post('/category/create','CategoryController@create');
@@ -83,6 +84,9 @@ Route::post('/user/destroy','UserController@destroy');
 Route::post('/user/change-status','UserController@changeStatus');
 
 Route::post('/system/upload','SystemController@upload');
+Route::post('/system/save-banner','SystemController@saveBanner');
+
+Route::get('/system/info','SystemController@info');
 
 // 店铺模块
 
@@ -93,4 +97,13 @@ Route::post('/store/create','StoreController@create');
 Route::post('/store/edit','StoreController@edit');
 Route::post('/store/destroy','StoreController@destroy');
 Route::post('/store/change-status','StoreController@changeStatus');
+
+Route::get('/product/index','ProductController@index');
+Route::get('/product/info','ProductController@info');
+
+Route::post('/product/create','ProductController@create');
+Route::post('/product/edit','ProductController@edit');
+Route::post('/product/destroy','ProductController@destroy');
+Route::post('/product/change-status','ProductController@changeStatus');
+Route::post('/product/set-dapai','ProductController@setDapai');
 

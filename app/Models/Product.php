@@ -20,11 +20,19 @@ class Product extends PublicModel
         'store_id',
         'status',
         'attaches',
-        'collect'
+        'collect',
+        'remain',
+        'sub_category_id',
+        'evalue',
+        'is_dapai',
+        'category',
+        'attention',
+        'is_online'
     ];
 
     protected $casts = [
-        'attaches' => 'json'
+        'attaches' => 'json',
+        'category' => 'json'
     ];
 
     protected $rememberCacheTag = 'Product';

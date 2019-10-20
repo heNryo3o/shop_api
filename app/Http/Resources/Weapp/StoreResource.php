@@ -22,7 +22,9 @@ class StoreResource extends JsonResource
             'evalue' => $this->evalue,
             'shangquan'=>$this->shangquan,
             'category_name'=>$this->category_name,
-            'average_cost' => $this->average_cost
+            'average_cost' => $this->average_cost,
+            'open_time' => $this->open_time,
+            'fuli' => $this->fuli ? $this->fuli : []
         ];
 
     }
