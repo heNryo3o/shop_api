@@ -18,7 +18,64 @@ class Order extends PublicModel
         'refund_no',
         'closed',
         'reviewed',
-        'ship_status'
+        'ship_status',
+        'status',
+        'store_id'
     ];
+
+    protected $appends = ['state','items','order_date'];
+
+    public function getStateAttribute()
+    {
+
+        if($this->status == 1){
+            return '待付款';
+        }elseif($this->status == 2){
+            return '等待发货';
+        }elseif($this->status == 3){
+            return '等待收货';
+        }elseif($this->status == 4){
+            return '待评价';
+        }elseif($this->status == 5){
+            return '已评价';
+        }elseif($this->status == 6){
+            return '已退款';
+        }elseif($this->status == 7){
+            return '已退款';
+        }
+
+    }
+
+    public function getOrderDateAttribute()
+    {
+        return date('Y-m-d',strtotime($this->created_at->toDateTimeString()));
+    }
+
+    public function getItemsAttribute()
+    {
+
+        $list = OrderItem::where('order_id',$this->id)->get()->toArray();
+
+        $items = [];
+
+        foreach ($list as $k => $v){
+
+            $product = Product::find($v['product_id']);
+
+            $items[] = [
+                'id' => $v['id'],
+                'price' => $v['price'],
+                'title' => $v['title'],
+                'product_thumb' => $product->thumb,
+                'product_id' => $v['product_id'],
+                'product_name' => $product->name,
+                'amount' => $v['amount']
+            ];
+
+        }
+
+        return $items;
+
+    }
 
 }

@@ -16,29 +16,12 @@ class Authenticate extends Middleware
 
         $white_list = [
             'weapp/user/token',
+            'weapp/category/index',
+            'weapp/product/index',
+            'weapp/system/banners',
+            'weapp/product/dapai',
             'seller/login/login',
             'admin/login/login',
-        ];
-
-        if(in_array($uri,$white_list)){
-            return;
-        }
-
-        if(substr($uri,0,5 ) == 'weapp'){
-
-            $user = User::where(['open_id'=>$request->open_id])->first();
-
-            if($user){
-
-                auth('weapp')->setUser(JwtWeapp::find($user->id));
-
-                return;
-
-            }
-
-        }
-
-        $white_list = [
             'seller/system/upload',
             'admin/system/upload',
             'seller/category/options',
@@ -48,6 +31,20 @@ class Authenticate extends Middleware
 
         if(in_array($uri,$white_list)){
             return;
+        }
+
+        if(substr($uri,0,5 ) == 'weapp') {
+
+            $user = User::where(['open_id' => $request->open_id])->first();
+
+            if ($user) {
+
+                auth('weapp')->setUser(JwtWeapp::find($user->id));
+
+                return;
+
+            }
+
         }
 
         if (empty($guards)) {

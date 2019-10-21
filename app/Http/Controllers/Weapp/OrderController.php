@@ -21,7 +21,7 @@ class OrderController extends Controller
 
         $query = $request->status > 0 ? $query->where('status',$request->status) : $query;
 
-        $list = $query->orderBy('id','desc')->get();
+        $list = $query->orderBy('id','desc')->paginate(10000);
 
         return $this->success(OrderResource::collection($list));
 
@@ -36,6 +36,7 @@ class OrderController extends Controller
             'no' => 'NO'.date('YmdHis',time()).random_int(100000,999999),
             'user_id' => $user_id,
             'total_amount' => $request->total_amount,
+            'status' => 1
         ];
 
         $list = CartItem::whereIn('id',$request->cart_item_ids)->get()->toArray();
@@ -47,6 +48,8 @@ class OrderController extends Controller
             if($v['amount'] > $sku->stock){
                 return $this->failed('您选购的'.Product::find($v['product_id'])->name.'商品'.$sku->title.'型号库存仅剩余'.$sku->stock.'件，无法下单');
             }
+
+            $order_data['store_id'] = $v['store_id'];
 
         }
 
@@ -61,6 +64,8 @@ class OrderController extends Controller
             $item_data = [
                 'order_id' => $order->id,
                 'product_id' => $v['product_id'],
+                'product_name' => Product::find($v['product_id'])->name,
+                'title' => $sku->title,
                 'product_sku_id' => $v['product_sku_id'],
                 'store_id' => $v['store_id'],
                 'amount' => $v['amount'],
@@ -81,21 +86,21 @@ class OrderController extends Controller
     public function info(Request $request)
     {
 
-        $order = Order::find($request->id)->toArray();
+        $order = Order::find($request->id);
 
-        $order['items'] = OrderItem::where(['order_id'=>$request->id])->get()->toArray();
+//        $order['items'] = OrderItem::where(['order_id'=>$request->id])->get()->toArray();
 
-        foreach ($order['items'] as $k => &$v){
+//        foreach ($order['items'] as $k => &$v){
+//
+//            $product = Product::find($v['product_id']);
+//
+//            $v['product_name'] = $product->name;
+//
+//            $v['product_thumb'] = $product->thumb;
+//
+//        }
 
-            $product = Product::find($v['product_id']);
-
-            $v['product_name'] = $product->name;
-
-            $v['product_thumb'] = $product->thumb;
-
-        }
-
-        return $this->success($order);
+        return $this->success(new OrderResource($order));
 
     }
 

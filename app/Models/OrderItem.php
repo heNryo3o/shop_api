@@ -15,7 +15,10 @@ class OrderItem extends PublicModel
         'rating',
         'review',
         'review_at',
-        'user_id'
+        'user_id',
+        'status',
+        'title',
+        'product_name'
     ];
 
 }
