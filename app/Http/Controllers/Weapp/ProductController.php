@@ -73,7 +73,7 @@ class ProductController extends Controller
 
         $product['is_collect'] = Collect::where(['type' => 1, 'user_id' => auth('weapp')->id(), 'item_id' => $product['id']])->count() > 0 ? 1 : 0;
 
-        $evalue = Evalue::whereIn(['id' => $product['evalues']])->orderBy('id', 'desc')->first();
+        $evalue = Evalue::whereIn('id',$product['evalues'])->orderBy('id', 'desc')->first();
 
         if ($evalue) {
 
@@ -114,9 +114,9 @@ class ProductController extends Controller
     public function evalueList(Request $request)
     {
 
-        $condition = $request->product_id > 0 ? ['product_id' => $request->product_id] : ['store_id' => $request->store_id];
+        $query = $request->product_id > 0 ? Evalue::whereIn('id',Product::find($request->product_id)->evalues) : Evalue::where(['store_id' => $request->store_id]);
 
-        $list = Evalue::where($condition)->orderBy('id', 'desc')->get();
+        $list = $query->orderBy('id', 'desc')->get();
 
         $result = [];
 
@@ -132,7 +132,7 @@ class ProductController extends Controller
 
                 $v['date'] = date('Y-m-d', strtotime($v['created_at']));
 
-                $v['attach_urls'] = $v['attaches'] ? array_column($v['attaches'], 'url') : [];
+                $v['attach_urls'] = $v['attaches'];
 
                 $result[] = $v;
 
