@@ -66,4 +66,13 @@ class UserController extends Controller
 
     }
 
+    public function info()
+    {
+
+        $user = User::find(auth('weapp')->id());
+
+        return $this->success($user);
+
+    }
+
 }

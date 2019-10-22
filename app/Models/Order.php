@@ -60,7 +60,7 @@ class Order extends PublicModel
 
         $deposit = Deposit::where(['out_trade_no'=>$out_trade_no])->get()->first()->toArray();
 
-        if($deposit['money']*100 == $fee){
+        if($deposit['deposit_money']*100 == $fee){
 
             Deposit::find($deposit['id'])->update([
                 'payed_money' => $fee/100,
@@ -70,9 +70,11 @@ class Order extends PublicModel
 
             $user = User::find($deposit['user_id']);
 
-            $user->update(['remain_money' => ($user->remain_money + $deposit['deposit_money'])]);
+            $user->update(['remain_money' => ($user->remain_money + $deposit['money'])]);
 
         }
+
+        return;
 
     }
 

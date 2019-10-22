@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Weapp;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\DepositSetting;
 use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -61,6 +62,15 @@ class SystemController extends Controller
         }
 
         return $pay->success();// laravel 框架中请直接 `return $pay->success()`
+    }
+
+    public function depositSetting()
+    {
+
+        $list = DepositSetting::all();
+
+        return $this->success(['list'=>$list]);
+
     }
 
 }

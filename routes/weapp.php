@@ -6,6 +6,7 @@
 
 Route::post('/user/token','UserController@token');
 Route::post('/user/edit','UserController@edit');
+Route::get('/user/info','UserController@info');
 
 Route::get('/category/index','CategoryController@index');
 Route::get('/category/sub','CategoryController@sub');
@@ -36,6 +37,8 @@ Route::get('/order/submit','OrderController@submit');
 Route::post('/order/generate-pay','OrderController@generatePay');
 Route::post('/order/deposit-pay','OrderController@depositPay');
 
+Route::post('/order/deposit','OrderController@deposit');
+
 Route::get('/location/default','LocationController@default');
 Route::get('/location/index','LocationController@index');
 Route::post('/location/create','LocationController@create');
@@ -47,5 +50,8 @@ Route::post('/store/collect','StoreController@collect');
 Route::get('/system/chat-log','SystemController@chatLog');
 
 Route::post('/system/notify','SystemController@notify');
+
+
+Route::get('/system/deposit-setting','SystemController@depositSetting');
 
 

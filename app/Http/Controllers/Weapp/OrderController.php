@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Weapp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Weapp\OrderResource;
 use App\Models\CartItem;
+use App\Models\Deposit;
+use App\Models\DepositSetting;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -170,6 +172,40 @@ class OrderController extends Controller
         );
 
         return $this->success();
+
+    }
+
+    public function deposit(Request $request)
+    {
+
+        $setting = DepositSetting::find($request->chosen_id);
+
+        $data = $request->all();
+
+        $data['out_trade_no'] = 'CHONGZHI'.time().random_int(100000,999999);
+
+        $data['user_id'] = auth('weapp')->id();
+
+        $data['status'] = 1;
+
+        $data['deposit_money'] = $setting->deposit_money;
+
+        $data['money'] = $setting->give_money + $setting->deposit_money;
+
+        Deposit::create($data);
+
+        $user = User::find($data['user_id']);
+
+        $order = [
+            'out_trade_no'=>$data['out_trade_no'],
+            'body'=>'平台充值',
+            'total_fee'=>$setting->deposit_money * 100,
+            'openid'=>$user->open_id
+        ];
+
+        $result = Pay::wechat(config('pay.wechat'))->miniapp($order);
+
+        return $this->success(['payment'=>$result]);
 
     }
 
