@@ -47,7 +47,7 @@ class SystemController extends Controller
             $data = $pay->verify(); // 是的，验签就这么简单！
 
             if($data->result_code === 'SUCCESS') {
-                if(substr($data->out_trade_no,0,5) == 'BUY'){
+                if(substr($data->out_trade_no,0,3) == 'BUY'){
                     (new Order())->dealNotify($data->out_trade_no,$data->cash_fee);
                 }elseif(substr($data->out_trade_no,0,5) == 'CHONG'){
                     (new Order())->dealDeposit($data->out_trade_no,$data->cash_fee);
