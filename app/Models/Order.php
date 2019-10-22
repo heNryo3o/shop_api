@@ -20,10 +20,21 @@ class Order extends PublicModel
         'reviewed',
         'ship_status',
         'status',
-        'store_id'
+        'store_id',
+        'linkman',
+        'mobile',
+        'use_deposit',
+        'location_id'
     ];
 
-    protected $appends = ['state','items','order_date'];
+    protected $appends = ['state','items','order_date','user_remain_money'];
+
+    public function getUserRemainMoneyAttribute()
+    {
+
+        return User::find($this->user_id)->remain_money;
+
+    }
 
     public function getStateAttribute()
     {
@@ -42,6 +53,8 @@ class Order extends PublicModel
             return '已退款';
         }elseif($this->status == 7){
             return '已退款';
+        }elseif($this->status == 8){
+            return '未使用';
         }
 
     }

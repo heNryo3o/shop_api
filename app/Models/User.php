@@ -11,7 +11,8 @@ class User extends PublicModel
         'status',
         'created_at',
         'updated_at',
-        'avatar'
+        'avatar',
+        'remain_money'
     ];
 
     protected $rememberCacheTag = 'User';

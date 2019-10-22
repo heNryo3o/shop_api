@@ -33,6 +33,15 @@ Route::get('/order/info','OrderController@info');
 Route::get('/order/index','OrderController@index');
 Route::get('/order/submit','OrderController@submit');
 
+Route::post('/order/generate-pay','OrderController@generatePay');
+Route::post('/order/deposit-pay','OrderController@depositPay');
+
+Route::get('/location/default','LocationController@default');
+Route::get('/location/index','LocationController@index');
+Route::post('/location/create','LocationController@create');
+Route::post('/location/edit','LocationController@edit');
+Route::post('/location/delete','LocationController@delete');
+
 Route::post('/store/collect','StoreController@collect');
 
 Route::get('/system/chat-log','SystemController@chatLog');

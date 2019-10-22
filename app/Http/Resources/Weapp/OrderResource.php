@@ -23,7 +23,9 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'items' => $this->items,
             'order_date' => $this->order_date,
-            'total_amount' => $this->total_amount
+            'total_amount' => $this->total_amount,
+            'user_remain_money' => $this->user_remain_money,
+            'can_use_deposit' => $this->total_amount <= $this->user_remain_money ? 1 : 2
         ];
 
     }
