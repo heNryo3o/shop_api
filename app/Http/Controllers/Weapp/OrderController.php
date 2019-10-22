@@ -368,7 +368,7 @@ class OrderController extends Controller
 
             $evalues[] = $evalue->id;
 
-            $product->update(['evalues' => $evalues]);
+            $product->update(['evalues' => $evalues,'evalue'=>($product->evalue+1)]);
 
         }
 

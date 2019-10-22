@@ -73,7 +73,7 @@ class ProductController extends Controller
 
         $product['is_collect'] = Collect::where(['type' => 1, 'user_id' => auth('weapp')->id(), 'item_id' => $product['id']])->count() > 0 ? 1 : 0;
 
-        $evalue = Evalue::where(['product_id' => $product['id']])->orderBy('id', 'desc')->first();
+        $evalue = Evalue::whereIn(['id' => $product['evalues']])->orderBy('id', 'desc')->first();
 
         if ($evalue) {
 
