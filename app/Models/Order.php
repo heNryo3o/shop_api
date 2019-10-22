@@ -39,7 +39,7 @@ class Order extends PublicModel
     public function dealNotify($out_trade_no,$fee)
     {
 
-        $order = Order::where(['no'=>$out_trade_no]);
+        $order = Order::where(['no'=>$out_trade_no])->first();
 
         if($fee == $order->total_amount*100){
             $order->update(
