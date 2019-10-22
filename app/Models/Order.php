@@ -11,20 +11,20 @@ class Order extends PublicModel
         'address',
         'total_amount',
         'remark',
-        'paid_at',
-        'payment_method',
-        'payment_no',
-        'refund_status',
-        'refund_no',
-        'closed',
-        'reviewed',
-        'ship_status',
+        'pay_at',
+        'created_at',
+        'updated_at',
         'status',
         'store_id',
-        'linkman',
         'mobile',
+        'linkman',
         'use_deposit',
-        'location_id'
+        'location_id',
+        'send_at',
+        'finish_at',
+        'evalue_at',
+        'refund_start_at',
+        'refund_end_at'
     ];
 
     protected $appends = ['state','items','order_date','user_remain_money'];

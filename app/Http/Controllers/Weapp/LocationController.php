@@ -32,6 +32,15 @@ class LocationController extends Controller
 
             $location = Location::where(['user_id'=>auth('weapp')->id(),'is_default'=>1])->get()->first();
 
+            Order::find($request->order_id)->update(
+                [
+                    'address' => $location->address,
+                    'mobile' => $location->mobile,
+                    'linkman' => $location->linkman,
+                    'location_id' => $request->location_id
+                ]
+            );
+
         }
 
         return $location ? $this->success(new LocationResource($location)) : $this->success();

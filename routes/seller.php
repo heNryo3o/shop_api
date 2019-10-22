@@ -29,3 +29,9 @@ Route::get('/product/index','ProductController@index');
 Route::post('/product/create','ProductController@create');
 Route::post('/product/edit','ProductController@edit');
 Route::post('/product/change-status','ProductController@changeStatus');
+
+Route::get('/order/index','OrderController@index');
+
+Route::post('/order/send-product','OrderController@sendProduct');
+
+Route::post('/order/agree-refund','OrderController@agreeRefund');

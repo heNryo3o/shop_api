@@ -35,10 +35,10 @@ class Store extends PublicModel
         'average_cost',
         'money',
         'money_block',
-        'money_hold',
         'money_total',
         'fuli',
-        'open_time'
+        'open_time',
+        'sold'
     ];
 
     protected $casts = [

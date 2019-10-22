@@ -38,6 +38,10 @@ Route::get('/order/submit','OrderController@submit');
 Route::post('/order/generate-pay','OrderController@generatePay');
 Route::post('/order/deposit-pay','OrderController@depositPay');
 
+Route::post('/order/evalue','OrderController@evalue');
+
+Route::post('/order/confirm-recieve','OrderController@confirmRecieve');
+
 Route::post('/order/deposit','OrderController@deposit');
 
 Route::get('/location/default','LocationController@default');
@@ -52,6 +56,7 @@ Route::get('/system/chat-log','SystemController@chatLog');
 
 Route::post('/system/notify','SystemController@notify');
 
+Route::post('/system/upload','SystemController@upload');
 
 Route::get('/system/deposit-setting','SystemController@depositSetting');
 

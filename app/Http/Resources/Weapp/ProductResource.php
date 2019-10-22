@@ -29,7 +29,9 @@ class ProductResource extends JsonResource
             'store_id' => $this->store_id,
             'status' => $this->status,
             'is_online' => $this->is_online,
-            'is_dapai' => $this->is_dapai
+            'is_dapai' => $this->is_dapai,
+            'sold_user' => $this->sold_user,
+            'evalues' => $this->evalues
         ];
 
     }

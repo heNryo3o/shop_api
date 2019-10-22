@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Weapp;
+namespace App\Http\Resources\Seller;
 
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,6 +22,7 @@ class OrderResource extends JsonResource
             'state' => $this->state,
             'status' => $this->status,
             'items' => $this->items,
+            'pay_at' => $this->pay_at,
             'order_date' => $this->order_date,
             'total_amount' => $this->total_amount,
             'user_remain_money' => $this->user_remain_money,
@@ -29,7 +30,7 @@ class OrderResource extends JsonResource
             'location_id' => $this->location_id,
             'address' => $this->address,
             'mobile' => $this->mobile,
-            'linkman' => $this->linkman
+            'linkman' => $this->linkman,
         ];
 
     }

@@ -27,12 +27,15 @@ class Product extends PublicModel
         'is_dapai',
         'category',
         'attention',
-        'is_online'
+        'is_online',
+        'sold_user',
+        'evalues'
     ];
 
     protected $casts = [
         'attaches' => 'json',
-        'category' => 'json'
+        'category' => 'json',
+        'evalues' => 'json'
     ];
 
     protected $rememberCacheTag = 'Product';

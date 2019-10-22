@@ -7,11 +7,13 @@ use App\Models\Banner;
 use App\Models\DepositSetting;
 use App\Models\Order;
 use App\Models\Setting;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use JMessage\IM\Report;
 use JMessage\JMessage;
 use Yansongda\LaravelPay\Facades\Pay;
 use Yansongda\Pay\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SystemController extends Controller
 {
@@ -70,6 +72,26 @@ class SystemController extends Controller
         $list = DepositSetting::all();
 
         return $this->success(['list'=>$list]);
+
+    }
+
+    public function upload(Request $request)
+    {
+
+        $save = 'public/'.date('Y/m/d', time());
+
+        $path = $request->file('file')->store($save);
+
+        $url = Storage::url($path);
+
+        $full_url = config('filesystems.default') == 'oss' ? config('filesystems.oss_url').$path : asset($url);
+
+        $result = array(
+            'preview_url' => $full_url,
+            'file_url' => $path
+        );
+
+        return $this->success($result);
 
     }
 
