@@ -36,6 +36,46 @@ class Order extends PublicModel
 
     }
 
+    public function dealNotify($out_trade_no,$fee)
+    {
+
+        $order = Order::where(['no'=>$out_trade_no]);
+
+        if($fee == $order->total_amount){
+            $order->update(
+                [
+                    'use_deposit' => 1,
+                    'payed_at' => now(),
+                    'status' => Store::find($order->store_id)->is_online == 1 ? 2 :8    //2 待发货 8线下待使用
+                ]
+            );
+        }
+
+        return;
+
+    }
+
+    public function dealDeposit($out_trade_no, $fee)
+    {
+
+        $deposit = Deposit::where(['out_trade_no'=>$out_trade_no])->get()->first()->toArray();
+
+        if($deposit['money']*100 == $fee){
+
+            Deposit::find($deposit['id'])->update([
+                'payed_money' => $fee/100,
+                'pay_at' => now(),
+                'status' => 2
+            ]);
+
+            $user = User::find($deposit['user_id']);
+
+            $user->update(['remain_money' => ($user->remain_money + $deposit['deposit_money'])]);
+
+        }
+
+    }
+
     public function getStateAttribute()
     {
 

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Weapp;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use JMessage\IM\Report;
 use JMessage\JMessage;
+use Yansongda\LaravelPay\Facades\Pay;
+use Yansongda\Pay\Log;
 
 class SystemController extends Controller
 {
@@ -34,6 +37,30 @@ class SystemController extends Controller
 
         return $this->success($response['body']);
 
+    }
+
+    public function notify()
+    {
+        $pay = Pay::wechat(config('pay.wechat'));
+
+        try{
+            $data = $pay->verify(); // 是的，验签就这么简单！
+
+            if($data->result_code === 'SUCCESS') {
+                if(substr($data->out_trade_no,0,5) == 'BUY'){
+                    (new Order())->dealNotify($data->out_trade_no,$data->cash_fee);
+                }elseif(substr($data->out_trade_no,0,5) == 'CHONG'){
+                    (new Order())->dealDeposit($data->out_trade_no,$data->cash_fee);
+                }
+            }
+
+            Log::debug('Wechat notify', $data->all());
+
+        } catch (\Exception $e) {
+            // $e->getMessage();
+        }
+
+        return $pay->success();// laravel 框架中请直接 `return $pay->success()`
     }
 
 }

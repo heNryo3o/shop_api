@@ -46,4 +46,6 @@ Route::post('/store/collect','StoreController@collect');
 
 Route::get('/system/chat-log','SystemController@chatLog');
 
+Route::post('/system/notify','SystemController@notify');
+
 

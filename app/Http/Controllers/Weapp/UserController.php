@@ -23,6 +23,10 @@ class UserController extends Controller
 
         $auth = $app->auth->session($request->code);
 
+        if(!isset($auth['openid'])){
+            return $this->failed(json_encode($auth));
+        }
+
         $open_id = $auth['openid'];
 
         $user = User::where(['open_id'=>$open_id])->first();
