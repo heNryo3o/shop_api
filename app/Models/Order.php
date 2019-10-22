@@ -41,7 +41,7 @@ class Order extends PublicModel
 
         $order = Order::where(['no'=>$out_trade_no]);
 
-        if($fee == $order->total_amount){
+        if($fee == $order->total_amount*100){
             $order->update(
                 [
                     'use_deposit' => 1,
