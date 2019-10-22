@@ -52,6 +52,49 @@ class OrderController extends Controller
 
     }
 
+    public function buyCreate(Request $request)
+    {
+
+        $user_id = auth('weapp')->id();
+
+        $sku = ProductSku::find($request->product_sku_id);
+
+        $total_amount = $sku->price * $request->amount;
+
+        if($request->amount > $sku->stock){
+            return $this->failed('您选购的'.Product::find($request->product_id)->name.'商品'.$sku->title.'型号库存仅剩余'.$sku->stock.'件，无法下单');
+        }
+
+        $order_data = [
+            'no' => 'BUY'.date('YmdHis',time()).random_int(100000,999999),
+            'user_id' => $user_id,
+            'total_amount' => $total_amount,
+            'status' => 1,
+            'store_id' => $request->store_id
+        ];
+
+        $order = Order::create($order_data);
+
+        $sku->update(['stock'=>($sku->stock - $request->amount)]);
+
+        $item_data = [
+            'order_id' => $order->id,
+            'product_id' => $request->product_id,
+            'product_name' => Product::find($request->product_id)->name,
+            'title' => $sku->title,
+            'product_sku_id' => $request->product_sku_id,
+            'store_id' => $request->store_id,
+            'amount' => $request->amount,
+            'price' => $sku->price,
+            'user_id' => $user_id
+        ];
+
+        OrderItem::create($item_data);
+
+        return $this->success(['order_id'=>$order->id]);
+
+    }
+
     public function cartCreate(Request $request)
     {
 

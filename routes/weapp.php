@@ -29,6 +29,7 @@ Route::get('/store/index','StoreController@index');
 Route::get('/store/product-list','StoreController@productList');
 
 Route::post('/order/cart-create','OrderController@cartCreate');
+Route::post('/order/buy-create','OrderController@buyCreate');
 
 Route::get('/order/info','OrderController@info');
 Route::get('/order/index','OrderController@index');
