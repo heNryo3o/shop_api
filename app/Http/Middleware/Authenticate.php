@@ -30,7 +30,7 @@ class Authenticate extends Middleware
             'weapp/system/notify',
             'weapp/system/upload',
             'weapp/order/check-order',
-            'weapp/order/confirm-order',
+            'weapp/order/confirm-check',
         ];
 
         if(in_array($uri,$white_list)){

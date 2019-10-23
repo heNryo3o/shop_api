@@ -69,7 +69,7 @@ Route::post('/user/bind-parent','UserController@bindParent');
 Route::post('/user/bind-mobile','UserController@bindMobile');
 
 Route::get('/order/check-order','OrderController@checkOrder');   //线下核销页
-Route::post('/order/confirm-order','OrderController@confirmOrder');   //线下核销页
+Route::post('/order/confirm-check','OrderController@confirmCheck');   //线下核销页
 
 
 

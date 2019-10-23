@@ -119,7 +119,7 @@ class OrderController extends Controller
 
     }
 
-    public function confirmOrder(Request $request)
+    public function confirmCheck(Request $request)
     {
 
         $order = Order::find($request->id);

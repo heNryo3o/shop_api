@@ -59,12 +59,16 @@
             type: "POST",
             dataType: "json",
             url: 'https://api.jiangsulezhong.com/weapp/order/confirm-check',
+            // url: 'http://127.0.0.1:8000/weapp/order/confirm-check',
             success: function (res) {
-                console.log(res)
+                if(res.code == 200){
+                    alert('核销成功')
+                }else{
+                    alert(res.msg)
+                }
             },
             error: function () {
-                layer.close(ind)
-                layer.msg("啊哟喂~出错了，再试一次看看呢！");
+                alert("出错了，再试一次看看呢！");
             },
         });
     }
