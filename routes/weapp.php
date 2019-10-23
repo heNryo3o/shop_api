@@ -50,6 +50,8 @@ Route::post('/location/create','LocationController@create');
 Route::post('/location/edit','LocationController@edit');
 Route::post('/location/delete','LocationController@delete');
 
+Route::post('/order/submit-refund','OrderController@submitRefund');
+
 Route::post('/store/collect','StoreController@collect');
 
 Route::get('/system/chat-log','SystemController@chatLog');
@@ -59,5 +61,16 @@ Route::post('/system/notify','SystemController@notify');
 Route::post('/system/upload','SystemController@upload');
 
 Route::get('/system/deposit-setting','SystemController@depositSetting');
+
+Route::get('/system/haibao','SystemController@haibao');
+
+Route::post('/user/bind-push','UserController@bindPush');
+Route::post('/user/bind-parent','UserController@bindParent');
+Route::post('/user/bind-mobile','UserController@bindMobile');
+
+Route::get('/order/check-order','OrderController@checkOrder');   //线下核销页
+Route::post('/order/confirm-order','OrderController@confirmOrder');   //线下核销页
+
+
 
 

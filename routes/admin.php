@@ -107,3 +107,6 @@ Route::post('/product/destroy','ProductController@destroy');
 Route::post('/product/change-status','ProductController@changeStatus');
 Route::post('/product/set-dapai','ProductController@setDapai');
 
+Route::get('/user/pushers','UserController@pushers');
+Route::post('/user/pusher-add','UserController@pusherAdd');
+

@@ -7,6 +7,7 @@ use App\Http\Resources\Weapp\ProductResource;
 use App\Models\CartItem;
 use App\Models\Collect;
 use App\Models\Evalue;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductSku;
 use App\Models\Store;
@@ -73,7 +74,7 @@ class ProductController extends Controller
 
         $product['is_collect'] = Collect::where(['type' => 1, 'user_id' => auth('weapp')->id(), 'item_id' => $product['id']])->count() > 0 ? 1 : 0;
 
-        $evalue = Evalue::whereIn('id',$product['evalues'])->orderBy('id', 'desc')->first();
+        $evalue = $product['evalues'] ? Evalue::whereIn('id',$product['evalues'])->orderBy('id', 'desc')->first() : [];
 
         if ($evalue) {
 
@@ -90,6 +91,8 @@ class ProductController extends Controller
             $product['evalue'] = ['id' => 0];
 
         }
+
+        $product['is_pusher'] = User::find(auth('weapp')->id())->is_pusher;
 
         $store = Store::find($product['store_id']);
 

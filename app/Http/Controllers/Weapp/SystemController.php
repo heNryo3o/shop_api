@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\DepositSetting;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Setting;
+use App\Models\Store;
 use App\Models\Upload;
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use JMessage\IM\Report;
 use JMessage\JMessage;
@@ -92,6 +95,34 @@ class SystemController extends Controller
         );
 
         return $this->success($result);
+
+    }
+
+    public function haibao(Request $request)
+    {
+
+        $app = Factory::miniProgram(config('wechat.mini_program.default'));
+
+        $res = $app->app_code->get('/pages/product/product_info?id=1&push_user_id='.auth('weapp')->id(), []);
+
+//        $filename = $res->saveAs(date('/Y/m/d',time()),time().random_int(100000,999999).'.png');
+
+        $filename = $res->saveAs(date('Y/m/d',time()),time().random_int(100000,999999).'.png');
+
+        $product = Product::find($request->id);
+
+        $store = Store::find($product->store_id);
+
+        $data = [
+            'url' => $product->thumb,
+            'icon' => $store->logo,
+            'title' => $product->name,
+            'discountPrice' => $product->price,
+            'orignPrice' => '',
+            'code' => asset(date('Y/m/d',time()).'/'.$filename)
+        ];
+
+        return $this->success($data);
 
     }
 

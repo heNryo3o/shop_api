@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Weapp;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\LoginRequest;
+use App\Http\Requests\Weapp\BindMobileRequest;
 use App\Http\Resources\Seller\StoreResource;
+use App\Models\BackenPusher;
+use App\Models\RecommenLog;
 use App\Models\Store;
 use App\Models\User;
 use EasyWeChat\Factory;
@@ -66,12 +69,71 @@ class UserController extends Controller
 
     }
 
+    public function bindMobile(BindMobileRequest $request)
+    {
+
+        $user = User::find(auth('weapp')->id());
+
+        $pusher = BackenPusher::where(['mobile'=>$request->mobile])->first();
+
+        if($pusher){
+            $user->update(
+                [
+                    'mobile' => $request->mobile,
+                    'is_pusher' => 1
+                ]
+            );
+        }else{
+            $user->update([
+                'mobile' => $request->mobile
+            ]);
+        }
+
+        return $this->success();
+
+    }
+
     public function info()
     {
 
         $user = User::find(auth('weapp')->id());
 
         return $this->success($user);
+
+    }
+
+    public function bindPush(Request $request)
+    {
+
+        RecommenLog::create([
+            'product_id' => $request->product_id,
+            'push_user_id' => $request->push_user_id,
+            'get_user_id' => auth('weapp')->id()
+        ]);
+
+        return $this->success();
+
+    }
+
+    public function bindParent(Request $request)
+    {
+
+        $user_id = auth('weapp')->id();
+
+        $push_user_id = $request->push_user_id;
+
+        $user = User::find($user_id);
+
+        if($user->parent_id || $user->is_pusher == 1){
+            return $this->success();
+        }
+
+        $user->update([
+            'parent_user_id' => $push_user_id,
+            'is_pusher' => 1
+        ]);
+
+        return $this->success();
 
     }
 

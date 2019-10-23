@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\ChangeStatusRequest;
 use App\Http\Requests\Admin\DestroyRequest;
+use App\Http\Requests\Admin\PusherAddRequest;
 use App\Http\Requests\Admin\UserRequest;
+use App\Http\Requests\Weapp\BindMobileRequest;
+use App\Http\Resources\Admin\BackenPusherResource;
 use App\Http\Resources\Admin\UserLogResource;
 use App\Http\Resources\Admin\UserResource;
+use App\Models\BackenPusher;
 use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
@@ -74,6 +78,36 @@ class UserController extends Controller
         $list = UserLog::filter($request->all())->orderBy($order_column, $order_type)->paginate($request->limit);
 
         return $this->success(UserLogResource::collection($list));
+
+    }
+
+    public function pushers(Request $request)
+    {
+
+        $order_column = $request->input('order_column', 'id');
+
+        $order_type = $request->input('order_type', 'desc');
+
+        $list = BackenPusher::where([])->orderBy($order_column, $order_type)->paginate($request->limit);
+
+        return $this->success(BackenPusherResource::collection($list));
+
+    }
+
+    public function pusherAdd(PusherAddRequest $request)
+    {
+
+        BackenPusher::create(['mobile'=>$request->mobile]);
+
+        $user = User::where(['mobile'=>$request->mobile])->first();
+
+        if($user && $user->is_pusher != 1){
+
+            User::find($user->id)->update(['is_pusher'=>1]);
+
+        }
+
+        return $this->success();
 
     }
 

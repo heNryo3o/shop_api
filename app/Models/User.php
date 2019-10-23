@@ -12,7 +12,12 @@ class User extends PublicModel
         'created_at',
         'updated_at',
         'avatar',
-        'remain_money'
+        'remain_money',
+        'money',
+        'money_block',
+        'is_pusher',
+        'parent_user_id',
+        'mobile'
     ];
 
     protected $rememberCacheTag = 'User';

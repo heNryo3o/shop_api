@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Weapp;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -31,7 +32,8 @@ class ProductResource extends JsonResource
             'is_online' => $this->is_online,
             'is_dapai' => $this->is_dapai,
             'sold_user' => $this->sold_user,
-            'evalues' => $this->evalues
+            'evalues' => $this->evalues,
+            'is_pusher' => auth('weapp')->id() ? User::find(auth('weapp')->id())->is_pusher : 2
         ];
 
     }

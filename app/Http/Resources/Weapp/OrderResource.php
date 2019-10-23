@@ -29,7 +29,8 @@ class OrderResource extends JsonResource
             'location_id' => $this->location_id,
             'address' => $this->address,
             'mobile' => $this->mobile,
-            'linkman' => $this->linkman
+            'linkman' => $this->linkman,
+            'qr_src' => $this->qr_src
         ];
 
     }

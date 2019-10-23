@@ -12,8 +12,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductSku;
+use App\Models\PusherLog;
 use App\Models\RecommenLog;
 use App\Models\RecommenRelation;
+use App\Models\Setting;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -64,8 +66,10 @@ class OrderController extends Controller
 
         $total_amount = $sku->price * $request->amount;
 
-        if ($request->amount > $sku->stock) {
-            return $this->failed('您选购的' . Product::find($request->product_id)->name . '商品' . $sku->title . '型号库存仅剩余' . $sku->stock . '件，无法下单');
+        $product = Product::find($request->product_id);
+
+        if ($request->amount > $sku->stock && $product->is_online == 1) {
+            return $this->failed('您选购的' . $product->name . '商品' . $sku->title . '型号库存仅剩余' . $sku->stock . '件，无法下单');
         }
 
         $order_data = [
@@ -78,7 +82,9 @@ class OrderController extends Controller
 
         $order = Order::create($order_data);
 
-        $sku->update(['stock' => ($sku->stock - $request->amount)]);
+        if($product->is_online == 1){
+            $sku->update(['stock' => ($sku->stock - $request->amount)]);
+        }
 
         $item_data = [
             'order_id' => $order->id,
@@ -94,7 +100,44 @@ class OrderController extends Controller
 
         OrderItem::create($item_data);
 
+        if($product->is_online != 1){
+
+            (new Order())->generateQrCode($order->id);  // 生成二维码
+
+        }
+
         return $this->success(['order_id' => $order->id]);
+
+    }
+
+    public function checkOrder(Request $request)
+    {
+
+        $order = Order::find($request->id);
+
+        return view('check',['order'=>$order]);
+
+    }
+
+    public function confirmOrder(Request $request)
+    {
+
+        $order = Order::find($request->id);
+
+        if($order->status != 8){
+            return $this->failed('当前订单状态无法进行核销操作');
+        }
+
+        $order->update(
+            [
+                'finish_at' => now(),
+                'status' => 9
+            ]
+        );
+
+        (new Order())->dealAfterRecieve($order);
+
+        return $this->success();
 
     }
 
@@ -116,8 +159,10 @@ class OrderController extends Controller
 
             $sku = ProductSku::find($v['product_sku_id']);
 
-            if ($v['amount'] > $sku->stock) {
-                return $this->failed('您选购的' . Product::find($v['product_id'])->name . '商品' . $sku->title . '型号库存仅剩余' . $sku->stock . '件，无法下单');
+            $product = Product::find($v['product_id']);
+
+            if ($v['amount'] > $sku->stock && $product->is_online == 1) {
+                return $this->failed('您选购的' . $product->name . '商品' . $sku->title . '型号库存仅剩余' . $sku->stock . '件，无法下单');
             }
 
             $order_data['store_id'] = $v['store_id'];
@@ -130,7 +175,9 @@ class OrderController extends Controller
 
             $sku = ProductSku::find($v['product_sku_id']);
 
-            $sku->update(['stock' => ($sku->stock - $v['amount'])]);
+            if($product->is_online == 1){
+                $sku->update(['stock' => ($sku->stock - $v['amount'])]);
+            }
 
             $item_data = [
                 'order_id' => $order->id,
@@ -145,6 +192,12 @@ class OrderController extends Controller
             ];
 
             OrderItem::create($item_data);
+
+        }
+
+        if($product->is_online != 1){
+
+            (new Order())->generateQrCode($order->id);  // 生成二维码
 
         }
 
@@ -209,7 +262,7 @@ class OrderController extends Controller
         $order->update(
             [
                 'use_deposit' => 1,
-                'payed_at' => now(),
+                'pay_at' => now(),
                 'status' => Store::find($order->store_id)->is_online == 1 ? 2 : 8    //2 待发货 8线下待使用
             ]
         );
@@ -270,63 +323,7 @@ class OrderController extends Controller
             ]
         );
 
-        $items = $order->items;
-
-        $store = Store::find($order->store_id);
-
-        // 更新统计信息，店铺销量，产品销量，产品销售额，店铺销售额，商家可提现余额，
-
-        $products = [];
-
-        $sold_num = 0;
-
-        foreach ($items as $k => $v) {
-
-            if (isset($products[$v['product_id']])) {
-
-                $products[$v['product_id']] += $v['amount'];
-
-            } else {
-
-                $products[$v['product_id']] = $v['amount'];
-
-            }
-
-            $sold_num += $v['amount'];
-
-        }
-
-        $store->update([
-            'sold' => intval($store->sold) + $sold_num,
-            'money_total' => $store->money_total + $order->total_amount,
-            'money' => $store->money + $order->total_amount
-        ]);
-
-        foreach ($products as $k => $v) {
-
-            $product = Product::find($k);
-
-            $product->update(['sold' => ($product->sold + $v), 'sold_user' => ($product->sold_user + 1)]);
-
-            $recommen = RecommenLog::where(['product_id' => $k, 'get_user_id' => $user_id])->orderBy('id', 'desc')->first();
-
-            if ($recommen) {
-
-                $push_user = User::find($recommen->push_user_id);
-
-                $push_user->update(['money' => ($push_user->money + $v * $product->retail_1)]);
-
-                if ($push_user->parent_user_id) {
-
-                    $parent_user = User::find($push_user->parent_user_id);
-
-                    $parent_user->update(['money' => ($parent_user->money + $v * $product->retail_2)]);
-
-                }
-
-            }
-
-        }
+        (new Order())->dealAfterRecieve($order);
 
         // 处理推手逻辑，给一级推手，二级推手加余额
 
@@ -376,6 +373,28 @@ class OrderController extends Controller
             [
                 'evalue_at' => now(),
                 'status' => 5
+            ]
+        );
+
+        return $this->success();
+
+    }
+
+    public function submitRefund(Request $request)
+    {
+
+        $order = Order::find($request->id);
+
+        if($order->status != 3 && $order->status != 2 && $order->status != 8){
+
+            return $this->failed('当前订单无法申请退款');
+
+        }
+
+        $order->update(
+            [
+                'refund_start_at'=>now(),
+                'status'=>6,
             ]
         );
 
