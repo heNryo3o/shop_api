@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>核销订单</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,shrink-to-fit=no,user-scalable=no">
     <script src="{{asset('plugins/jquery/jquery.js')}}" type="text/javascript" charset="utf-8"></script>
 
 </head>
@@ -59,7 +60,6 @@
             type: "POST",
             dataType: "json",
             url: 'https://api.jiangsulezhong.com/weapp/order/confirm-check',
-            // url: 'http://127.0.0.1:8000/weapp/order/confirm-check',
             success: function (res) {
                 if(res.code == 200){
                     alert('核销成功')
