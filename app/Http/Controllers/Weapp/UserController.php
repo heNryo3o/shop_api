@@ -54,6 +54,19 @@ class UserController extends Controller
 
     }
 
+    public function jRegister(Request $request)
+    {
+
+        $user = User::find(auth('weapp')->id());
+
+        $jim = new \JMessage\IM\User(new JMessage(config('jim.key'), config('jim.secret')));
+
+        $jim->register('user_'.$user->id, '123456');
+
+        return $this->success(['username'=>'user_'.$user->id]);
+
+    }
+
     public function edit(Request $request)
     {
 

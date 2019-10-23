@@ -71,6 +71,8 @@ Route::post('/user/bind-mobile','UserController@bindMobile');
 Route::get('/order/check-order','OrderController@checkOrder');   //线下核销页
 Route::post('/order/confirm-check','OrderController@confirmCheck');   //线下核销页
 
+Route::post('/user/j-register','UserController@jRegister');   //线下核销页
+
 
 
 
