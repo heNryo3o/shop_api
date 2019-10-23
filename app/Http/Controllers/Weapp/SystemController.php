@@ -107,7 +107,7 @@ class SystemController extends Controller
 
 //        $filename = $res->saveAs(date('/Y/m/d',time()),time().random_int(100000,999999).'.png');
 
-        $filename = $res->saveAs(date('Y/m/d',time()),time().random_int(100000,999999).'.png');
+        $filename = $res->saveAs('storage/'.date('Y/m/d',time()),time().random_int(100000,999999).'.png');
 
         $product = Product::find($request->id);
 
