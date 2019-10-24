@@ -39,7 +39,7 @@ class SystemController extends Controller
 
         $start = date('Y-m-d H:i:s',time()-86400*7);
 
-        $response = $report->getUserMessages('kefu_2', 1000, $start, $end);
+        $response = $report->getUserMessages($request->username, 1000, $start, $end);
 
         return $this->success($response['body']);
 
