@@ -107,7 +107,9 @@ class SystemController extends Controller
 
 //        $filename = $res->saveAs(date('/Y/m/d',time()),time().random_int(100000,999999).'.png');
 
-        $filename = $res->saveAs('storage/'.date('Y/m/d',time()),time().random_int(100000,999999).'.png');
+        $path = 'storage/'.date('Y/m/d',time());
+
+        $filename = $res->saveAs($path,time().random_int(100000,999999).'.png');
 
         $product = Product::find($request->id);
 
@@ -119,7 +121,7 @@ class SystemController extends Controller
             'title' => $product->name,
             'discountPrice' => $product->price,
             'orignPrice' => '',
-            'code' => asset(date('Y/m/d',time()).'/'.$filename)
+            'code' => asset($path.'/'.$filename)
         ];
 
         return $this->success($data);
