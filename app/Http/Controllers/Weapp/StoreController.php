@@ -98,6 +98,29 @@ class StoreController extends Controller
 
     }
 
+    public function collectIndex(Request $request)
+    {
+
+        $user_id = auth('weapp')->id();
+
+        $collect = Collect::where(['user_id'=>$user_id,'type'=>2])->get();
+
+        $ids = $collect ? array_column($collect->toArray(),'item_id') : [];
+
+        if($ids){
+
+            $list = Store::whereIn('id',$ids)->where(['status'=>4])->orderBy('id','desc')->paginate(1000);
+
+            return $this->success(StoreResource::collection($list));
+
+        }else{
+
+            return $this->success(['list'=>[]]);
+
+        }
+
+    }
+
     public function productList(Request $request)
     {
 

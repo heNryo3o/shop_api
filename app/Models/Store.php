@@ -71,6 +71,8 @@ class Store extends PublicModel
 
         $arr = array_column($category,'name');
 
+        unset($arr[0]);
+
         return implode('/',$arr);
 
     }

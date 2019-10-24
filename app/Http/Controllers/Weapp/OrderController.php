@@ -15,6 +15,7 @@ use App\Models\ProductSku;
 use App\Models\PusherLog;
 use App\Models\RecommenLog;
 use App\Models\RecommenRelation;
+use App\Models\RemainLog;
 use App\Models\Setting;
 use App\Models\Store;
 use App\Models\User;
@@ -264,6 +265,15 @@ class OrderController extends Controller
                 'use_deposit' => 1,
                 'pay_at' => now(),
                 'status' => Store::find($order->store_id)->is_online == 1 ? 2 : 8    //2 待发货 8线下待使用
+            ]
+        );
+
+        RemainLog::create(
+            [
+                'user_id' => $order->user_id,
+                'money' => $order->total_amount,
+                'type' => 2,
+                'order_id' => $request->id
             ]
         );
 

@@ -8,6 +8,7 @@ use App\Http\Requests\Weapp\BindMobileRequest;
 use App\Http\Resources\Seller\StoreResource;
 use App\Models\BackenPusher;
 use App\Models\RecommenLog;
+use App\Models\RemainLog;
 use App\Models\Store;
 use App\Models\User;
 use EasyWeChat\Factory;
@@ -147,6 +148,15 @@ class UserController extends Controller
         ]);
 
         return $this->success();
+
+    }
+
+    public function remainLog(Request $request)
+    {
+
+        $list = RemainLog::where(['user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
+
+        return $this->success(['list'=>$list]);
 
     }
 

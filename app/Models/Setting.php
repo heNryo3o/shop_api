@@ -9,7 +9,8 @@ class Setting extends PublicModel
 
     protected $fillable = [
         'banners',
-        'ad_pic'
+        'ad_pic',
+        'rate'
     ];
 
     protected $casts = [

@@ -68,6 +68,8 @@ class Order extends PublicModel
 
         $store_money = $setting->rate * $store_money / 100;
 
+        $retail_total_1 = $retail_total_2 = 0;
+
         foreach ($products as $k => $v) {
 
             $product = Product::find($k);
@@ -91,6 +93,8 @@ class Order extends PublicModel
                     'buy_user_id' => $user_id
                 ]);
 
+                $retail_total_1 += $product->retail_1 * $v;
+
                 $store_money -= $product->retail_1 * $v;
 
                 if ($push_user->parent_user_id) {
@@ -107,6 +111,8 @@ class Order extends PublicModel
                         'buy_user_id' => $user_id
                     ]);
 
+                    $retail_total_2 += $product->retail_2 * $v;
+
                     $store_money -= $product->retail_2 * $v;
 
                 }
@@ -120,6 +126,18 @@ class Order extends PublicModel
             'money_total' => $store->money_total + $order->total_amount,
             'money' => $store->money + $store_money
         ]);
+
+        StoreMoneyLog::create(
+            [
+                'store_id' => $store->id,
+                'earn_money' => $store_money,
+                'order_id' => $order->id,
+                'retail_1' => $retail_total_1,
+                'retail_2' => $retail_total_2,
+                'order_money' => $order->total_amount,
+                'cost_money' => $order->total_amount * (100-$setting->rate)/100
+            ]
+        );
 
         return;
 
@@ -161,6 +179,16 @@ class Order extends PublicModel
                     'status' => Store::find($order->store_id)->is_online == 1 ? 2 :8    //2 待发货 8线下待使用
                 ]
             );
+
+            PayLog::create(
+                [
+                    'user_id' => $order->user_id,
+                    'money' => $order->total_amount,
+                    'type' => 2,
+                    'order_id' => $order->id
+                ]
+            );
+
         }
 
         return;
@@ -181,6 +209,24 @@ class Order extends PublicModel
             ]);
 
             $user = User::find($deposit['user_id']);
+
+            RemainLog::create(
+                [
+                    'user_id' => $deposit['user_id'],
+                    'money' => $deposit['money'],
+                    'type' => 1,
+                    'order_id' => 0
+                ]
+            );
+
+            PayLog::create(
+                [
+                    'user_id' => $deposit['user_id'],
+                    'money' => $deposit['deposit_money'],
+                    'type' => 1,
+                    'order_id' => 0
+                ]
+            );
 
             $user->update(['remain_money' => ($user->remain_money + $deposit['money'])]);
 

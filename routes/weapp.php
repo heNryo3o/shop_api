@@ -14,6 +14,7 @@ Route::get('/category/sub','CategoryController@sub');
 Route::get('/system/banners','SystemController@banners');
 
 Route::get('/product/index','ProductController@index');
+Route::get('/product/collect-index','ProductController@collectIndex');
 Route::get('/product/dapai','ProductController@dapai');
 Route::get('/product/info','ProductController@info');
 Route::get('/product/evalue-list','ProductController@evalueList');
@@ -26,6 +27,7 @@ Route::post('/product/cart-change-number','ProductController@cartChangeNumber');
 
 Route::get('/store/info','StoreController@info');
 Route::get('/store/index','StoreController@index');
+Route::get('/store/collect-index','StoreController@collectIndex');
 Route::get('/store/product-list','StoreController@productList');
 
 Route::post('/order/cart-create','OrderController@cartCreate');
@@ -72,6 +74,8 @@ Route::get('/order/check-order','OrderController@checkOrder');   //线下核销�
 Route::post('/order/confirm-check','OrderController@confirmCheck');   //线下核销页
 
 Route::post('/user/j-register','UserController@jRegister');   //线下核销页
+
+Route::get('/user/remain-log','UserController@remainLog');   //线下核销页
 
 
 

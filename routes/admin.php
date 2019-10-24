@@ -110,3 +110,6 @@ Route::post('/product/set-dapai','ProductController@setDapai');
 Route::get('/user/pushers','UserController@pushers');
 Route::post('/user/pusher-add','UserController@pusherAdd');
 
+Route::get('/account/pay-log','AccountController@payLog');
+
+
