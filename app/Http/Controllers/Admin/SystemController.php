@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DepositSetting;
 use App\Models\Setting;
 use App\Models\Upload;
 use Illuminate\Http\Request;
@@ -23,7 +24,20 @@ class SystemController extends Controller
     public function saveBanner(Request $request)
     {
 
-        Setting::find(1)->update($request->all());
+        $setting = Setting::find(1)->update($request->all());
+
+        DepositSetting::where([])->delete();
+
+        foreach (Setting::find(1)->deposits as $k => $v){
+
+            DepositSetting::create(
+                [
+                    'deposit_money' => $v['deposit_money'],
+                    'give_money' => $v['give_money']
+                ]
+            );
+
+        }
 
         return $this->success();
     }

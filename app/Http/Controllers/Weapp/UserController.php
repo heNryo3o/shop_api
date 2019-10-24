@@ -7,8 +7,12 @@ use App\Http\Requests\Seller\LoginRequest;
 use App\Http\Requests\Weapp\BindMobileRequest;
 use App\Http\Resources\Seller\StoreResource;
 use App\Models\BackenPusher;
+use App\Models\PusherBindLog;
+use App\Models\PusherCashLog;
+use App\Models\PusherLog;
 use App\Models\RecommenLog;
 use App\Models\RemainLog;
+use App\Models\Setting;
 use App\Models\Store;
 use App\Models\User;
 use EasyWeChat\Factory;
@@ -144,8 +148,11 @@ class UserController extends Controller
 
         $user->update([
             'parent_user_id' => $push_user_id,
-            'is_pusher' => 1
+            'is_pusher' => 1,
+            'pusher_at' => now()
         ]);
+
+        PusherBindLog::create(['parent_user_id'=>$push_user_id,'child_user_id'=>$user_id]);
 
         return $this->success();
 
@@ -155,6 +162,91 @@ class UserController extends Controller
     {
 
         $list = RemainLog::where(['user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
+
+        return $this->success(['list'=>$list]);
+
+    }
+
+    public function pushLog(Request $request)
+    {
+
+        $list = PusherLog::where(['push_user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
+
+        $total_earn = 0;
+
+        if($list){
+
+            foreach ($list->toArray() as $k => $v){
+
+                $total_earn += $v['retail'];
+
+            }
+
+        }
+
+        return $this->success(['list'=>$list,'total_earn'=>$total_earn,'invite_src'=>User::find(auth('weapp')->id())->invite_src]);
+
+    }
+
+    public function childList(Request $request)
+    {
+
+        $list = User::where(['parent_user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
+
+        return $this->success(['list'=>$list]);
+
+    }
+
+    public function cashInfo()
+    {
+
+        $setting = Setting::find(1);
+
+        $user = User::find(auth('weapp')->id());
+
+        return $this->success(
+            [
+                'money' => $user->money,
+                'money_block' => $user->money_block,
+                'kefu' => $setting->kefu,
+            ]
+        );
+
+    }
+
+    public function cashOut(Request $request)
+    {
+
+        $money = $request->money;
+
+        $user = User::find(auth('weapp')->id());
+
+        if($money < 50){
+            return $this->failed('提现金额不能低于50元');
+        }
+
+        if($money > ($user->money - $user->money_block)){
+            return $this->failed('提现金额不能大于可提现总额');
+        }
+
+        $user->update(['money_block'=>$user->money_block+$money]);
+
+        PusherCashLog::create(
+            [
+                'user_id' => auth('weapp')->id(),
+                'money' => $money,
+                'status' => 1
+            ]
+        );
+
+        return $this->success();
+
+    }
+
+    public function cashLog(Request $request)
+    {
+
+        $list = PusherCashLog::where(['user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
 
         return $this->success(['list'=>$list]);
 

@@ -10,11 +10,14 @@ class Setting extends PublicModel
     protected $fillable = [
         'banners',
         'ad_pic',
-        'rate'
+        'rate',
+        'kefu',
+        'deposits'
     ];
 
     protected $casts = [
-        'banners'=>'json'
+        'banners'=>'json',
+        'deposits' => 'json'
     ];
 
 }

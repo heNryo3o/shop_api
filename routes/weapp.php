@@ -77,6 +77,15 @@ Route::post('/user/j-register','UserController@jRegister');   //线下核销页
 
 Route::get('/user/remain-log','UserController@remainLog');   //线下核销页
 
+Route::get('/user/push-log','UserController@pushLog');   //线下核销页
+
+Route::get('/user/child-list','UserController@childList');   //线下核销页
+
+Route::get('/user/cash-info','UserController@cashInfo');   //线下核销页
+Route::post('/user/cash-out','UserController@cashOut');   //线下核销页
+
+Route::get('/user/cash-log','UserController@cashLog');   //线下核销页
+
 
 
 
