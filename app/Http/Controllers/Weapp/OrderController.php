@@ -428,17 +428,28 @@ class OrderController extends Controller
 
             $v['txt'] = '无门槛优惠券';
 
-            $v['color'] = '#FF8830';
+            $v['color'] = $v['status'] == 1 ? '#FF8830' : '#909399';
 
             $v['height'] = '180rpx';
 
             $v['ltBg'] = '#FFFFFF';
 
-            $v['number'] = $v['money'];
+            $v['number'] = floatval($v['money']);
 
         }
 
         return $this->success(['list'=>$coupons]);
+
+    }
+
+    public function bindCoupon(Request $request)
+    {
+
+        $order = Order::find($request->order_id);
+
+        $order->update(['coupon_id'=>$request->coupon_id]);
+
+        return $this->success();
 
     }
 
