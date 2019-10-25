@@ -55,6 +55,16 @@ class SystemController extends Controller
             }
         }
 
+        if(substr($request->username,0,4) == 'kefu'){
+
+            $store_id = str_replace($request->username,'kefu_','');
+
+            $avatar = Store::find($store_id)->logo;
+
+        }
+
+        $response['body']['avatar'] = $avatar;
+
         return $this->success($response['body']);
 
     }

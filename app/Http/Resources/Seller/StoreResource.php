@@ -13,11 +13,13 @@ class StoreResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'true_name' => $this->true_name,
+            'true_name' => $this->name,
             'created_at' => $this->created_at->toDateTimeString(),
             'status' => $this->status,
             'roles' => ['super_admin'],
-            'avatar' => $this->avatar ? $this->avatar : 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80'
+            'avatar' => $this->avatar ? $this->avatar : 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80',
+            'money' => floatval($this->money),
+            'money_block' => floatval($this->money_block)
         ];
 
     }

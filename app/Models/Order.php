@@ -115,7 +115,25 @@ class Order extends PublicModel
 
                     $store_money -= $product->retail_2 * $v;
 
+                }else{
+
+                    // 如果没有团推，还是要扣钱，到平台
+
+                    $retail_total_2 += $product->retail_2 * $v;
+
+                    $store_money -= $product->retail_2 * $v;
+
                 }
+
+            }else{
+
+                $retail_total_1 += $product->retail_1 * $v;
+
+                $store_money -= $product->retail_1 * $v;
+
+                $retail_total_2 += $product->retail_2 * $v;
+
+                $store_money -= $product->retail_2 * $v;
 
             }
 

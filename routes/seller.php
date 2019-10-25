@@ -35,3 +35,8 @@ Route::get('/order/index','OrderController@index');
 Route::post('/order/send-product','OrderController@sendProduct');
 
 Route::post('/order/agree-refund','OrderController@agreeRefund');
+
+Route::get('/order/money-log','OrderController@moneyLog');
+
+Route::get('/order/cash-log','OrderController@cashLog');
+Route::post('/order/cash-submit','OrderController@cashSubmit');
