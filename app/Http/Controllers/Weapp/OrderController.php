@@ -416,7 +416,27 @@ class OrderController extends Controller
     public function coupons(Request $request)
     {
 
-        $coupons = Coupon::where(['user_id' => auth('weapp')->id()])->orderBy('id','desc')->get();
+        $coupons = Coupon::where(['user_id' => auth('weapp')->id()])->orderBy('id','desc')->get()->toArray();
+
+        foreach ($coupons as $k => &$v){
+
+            $v['btn'] = $v['status'] == 1 ? '去使用' : '已使用';
+
+            $v['title'] = '全场通用券';
+
+            $v['unit'] = '￥';
+
+            $v['txt'] = '无门槛优惠券';
+
+            $v['color'] = '#FF8830';
+
+            $v['height'] = '180rpx';
+
+            $v['ltBg'] = '#FFFFFF';
+
+            $v['number'] = $v['money'];
+
+        }
 
         return $this->success(['list'=>$coupons]);
 
