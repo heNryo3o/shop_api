@@ -216,7 +216,9 @@ class ProductController extends Controller
 
         $sku = ProductSku::find($request->product_sku_id);
 
-        if ($sku->stock < $request->amount) {
+        $product = Product::find($request->product_id);
+
+        if ($sku->stock < $request->amount && $product->is_online == 1) {
             return $this->failed('选购数量超出库存，请重新选择');
         }
 
