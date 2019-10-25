@@ -20,7 +20,9 @@ class User extends PublicModel
         'money_block',
         'is_pusher',
         'parent_user_id',
-        'mobile'
+        'mobile',
+        'city',
+        'pusher_at'
     ];
 
     protected $rememberCacheTag = 'User';

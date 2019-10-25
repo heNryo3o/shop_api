@@ -11,6 +11,9 @@ Route::get('/login/info','LoginController@info');
 Route::post('/login/login','LoginController@login');
 Route::post('/login/logout','LoginController@logout');
 
+Route::post('/login/edit','LoginController@edit');
+Route::post('/login/change-password','LoginController@changePassword');
+
 // 管理员模块
 
 Route::get('/admin/index','AdminController@index');

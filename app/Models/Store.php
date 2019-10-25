@@ -38,7 +38,8 @@ class Store extends PublicModel
         'money_total',
         'fuli',
         'open_time',
-        'sold'
+        'sold',
+        'city'
     ];
 
     protected $casts = [

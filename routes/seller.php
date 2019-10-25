@@ -11,6 +11,8 @@ Route::get('/login/info','LoginController@info');
 Route::post('/login/login','LoginController@login');
 Route::post('/login/logout','LoginController@logout');
 
+Route::post('/login/change-password','LoginController@changePassword');
+
 Route::get('/category/options','CategoryController@options');
 Route::get('/category/sub-options','CategoryController@subOptions');
 

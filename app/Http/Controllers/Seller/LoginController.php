@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\LoginRequest;
 use App\Http\Resources\Seller\StoreResource;
 use App\Models\Store;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -64,6 +65,15 @@ class LoginController extends Controller
         $user = Store::where('id',$id)->first();
 
         return $this->success(new StoreResource($user));
+
+    }
+
+    public function changePassword(Request $request)
+    {
+
+        Store::find(auth('seller')->id())->update(['password'=>bcrypt($request->password)]);
+
+        return $this->success();
 
     }
 

@@ -28,6 +28,8 @@ class StoreController extends Controller
 
         $data['password'] = bcrypt(substr($data['mobile'],-6));
 
+        $data['city'] = isset($data['area']['1']) ? $data['area']['1'] : 0;
+
         $store = Store::create($data);
 
         $jim = new User(new JMessage(config('jim.key'), config('jim.secret')));

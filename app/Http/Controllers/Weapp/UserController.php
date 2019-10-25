@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\LoginRequest;
 use App\Http\Requests\Weapp\BindMobileRequest;
 use App\Http\Resources\Seller\StoreResource;
+use App\Models\Area;
 use App\Models\BackenPusher;
 use App\Models\PusherBindLog;
 use App\Models\PusherCashLog;
@@ -249,6 +250,23 @@ class UserController extends Controller
         $list = PusherCashLog::where(['user_id'=>auth('weapp')->id()])->orderBy('id','desc')->get();
 
         return $this->success(['list'=>$list]);
+
+    }
+
+    public function bindArea(Request $request)
+    {
+
+        $area = Area::find($request->area_id);
+
+        $city_code = $area ? $area->parent_id : 0;
+
+        if($city_code > 0){
+
+            User::find(auth('weapp')->id())->update(['city'=>$city_code]);
+
+        }
+
+        return $this->success();
 
     }
 

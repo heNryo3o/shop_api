@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ChangePasswordRequest;
+use App\Http\Requests\Admin\EditLoginRequest;
 use App\Http\Requests\Admin\LoginRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
@@ -52,6 +54,24 @@ class LoginController extends Controller
         $user = Admin::where('id',$id)->with(['roles:roles.id,name','permissions:permissions.id'])->first();
 
         return $this->success(new AdminResource($user));
+
+    }
+
+    public function edit(EditLoginRequest $request)
+    {
+
+        Admin::find(auth('admin')->id())->update($request->all());
+
+        return $this->success();
+
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+
+        Admin::find(auth('admin')->id())->update(['password'=>bcrypt($request->password)]);
+
+        return $this->success();
 
     }
 
