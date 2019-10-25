@@ -255,24 +255,49 @@ class OrderController extends Controller
 
         $user = User::find($order->user_id);
 
-        if ($user->remain_money < $order->total_amount) {
+        $amount = $order->total_amount;
+
+        $use_coupon = 2;
+
+        if($order->coupon_id > 0){
+
+            $coupon = Coupon::find($order->coupon_id);
+
+            if($coupon->status == 1){
+
+                $amount = $amount - $coupon->money < 0 ? 0 : $amount - $coupon->money;
+
+                $use_coupon = 1;
+
+            }
+
+        }
+
+        if ($user->remain_money < $amount) {
             return $this->failed('余额不足，请充值');
         }
 
-        $user->update(['remain_money' => ($user->remain_money - $order->total_amount)]);
+        $user->update(['remain_money' => ($user->remain_money - $amount)]);
+
+        if($use_coupon == 1){
+
+            $coupon->update(['status' => 2,'used_at' => now()]);
+
+        }
 
         $order->update(
             [
                 'use_deposit' => 1,
                 'pay_at' => now(),
-                'status' => Store::find($order->store_id)->is_online == 1 ? 2 : 8    //2 待发货 8线下待使用
+                'status' => Store::find($order->store_id)->is_online == 1 ? 2 : 8,    //2 待发货 8线下待使用
+                'use_coupon' => $use_coupon
             ]
         );
 
         RemainLog::create(
             [
                 'user_id' => $order->user_id,
-                'money' => $order->total_amount,
+                'money' => $amount,
                 'type' => 2,
                 'order_id' => $request->id
             ]
