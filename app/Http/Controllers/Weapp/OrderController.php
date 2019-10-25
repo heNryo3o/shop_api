@@ -151,7 +151,6 @@ class OrderController extends Controller
         $order_data = [
             'no' => 'BUY' . date('YmdHis', time()) . random_int(100000, 999999),
             'user_id' => $user_id,
-            'total_amount' => $request->total_amount,
             'status' => 1
         ];
 
@@ -177,6 +176,8 @@ class OrderController extends Controller
 
         }
 
+        $order_data['total_amount'] = 0;
+
         $list = CartItem::whereIn('id', $cart_item_ids)->get()->toArray();
 
         foreach ($list as $k => $v) {
@@ -190,6 +191,8 @@ class OrderController extends Controller
             }
 
             $order_data['store_id'] = $v['store_id'];
+
+            $order_data['total_amount'] += $v['amount']*$sku->price;
 
         }
 
