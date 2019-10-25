@@ -191,7 +191,21 @@ class Order extends PublicModel
 
         $order = Order::where(['no'=>$out_trade_no])->first();
 
-        if($fee == $order->total_amount*100){
+        $amount = $order->total_amount;
+
+        if($order->coupon_id > 0){
+
+            $coupon = Coupon::find($order->coupon_id);
+
+            if($coupon->status == 1){
+
+                $amount = $amount - $coupon->money;
+
+            }
+
+        }
+
+        if($fee == $amount*100){
             $order->update(
                 [
                     'use_deposit' => 1,
@@ -199,6 +213,12 @@ class Order extends PublicModel
                     'status' => Store::find($order->store_id)->is_online == 1 ? 2 :8    //2 待发货 8线下待使用
                 ]
             );
+
+            if($coupon){
+
+                $coupon->update(['status'=>2]);
+
+            }
 
             PayLog::create(
                 [

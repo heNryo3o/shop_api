@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\StoreCashLogResource;
 use App\Http\Resources\Seller\OrderResource;
 use App\Http\Resources\Seller\StoreMoneyLogResource;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Store;
 use App\Models\StoreCashLog;
@@ -60,8 +61,18 @@ class OrderController extends Controller
 
         $user = User::find($order->user_id);
 
+        $amount = $order->total_amount;
+
+        if($order->use_coupon == 1){
+
+            $coupon = Coupon::find($order->coupon_id);
+
+            $amount = $amount - $coupon->money;
+
+        }
+
         $user->update([
-            'remain_money' => $user->remain_money + $order->total_amount
+            'remain_money' => $user->remain_money + $amount
         ]);
 
         $order->update([

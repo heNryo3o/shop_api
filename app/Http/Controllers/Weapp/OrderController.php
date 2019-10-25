@@ -233,12 +233,26 @@ class OrderController extends Controller
             ]
         );
 
+        $amount = $order->total_amount;
+
+        if($order->coupon_id > 0){
+
+            $coupon = Coupon::find($order->coupon_id);
+
+            if($coupon->status == 1){
+
+                $amount = $amount - $coupon->money;
+
+            }
+
+        }
+
         $user = User::find($order->user_id);
 
         $order = [
             'out_trade_no' => $order->no,
             'body' => '购买商品',
-            'total_fee' => $order->total_amount * 100,
+            'total_fee' => $amount * 100,
             'openid' => $user->open_id
         ];
 
