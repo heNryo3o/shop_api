@@ -13,6 +13,7 @@ use App\Models\Upload;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use JMessage\IM\Report;
+use JMessage\IM\Resource;
 use JMessage\JMessage;
 use Yansongda\LaravelPay\Facades\Pay;
 use Yansongda\Pay\Log;
@@ -33,13 +34,26 @@ class SystemController extends Controller
     public function chatLog(Request $request)
     {
 
-        $report = new Report(new JMessage(config('jim.key'), config('jim.secret')));
+        $jim = new JMessage(config('jim.key'), config('jim.secret'));
+
+        $report = new Report($jim);
 
         $end = date('Y-m-d H:i:s',time());
 
         $start = date('Y-m-d H:i:s',time()-86400*7);
 
         $response = $report->getUserMessages($request->username, 1000, $start, $end);
+
+        $resource =  new Resource($jim);
+
+        if($response['body']['messages']){
+            foreach ($response['body']['messages'] as $k => &$v){
+                if(isset($v['msg_body']['media_id'])){
+                    $media_res = $resource->download($v['msg_body']['media_id']);
+                    $v['msg_body']['media_src'] = $media_res['body']['url'];
+                }
+            }
+        }
 
         return $this->success($response['body']);
 

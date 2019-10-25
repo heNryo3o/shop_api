@@ -18,4 +18,13 @@ class UserFilter extends PublicFilter
         return $this->whereLike('nickname',$value);
     }
 
+    public function mobile($value)
+    {
+        return $this->whereLike('mobile',$value);
+    }
+
+    public function isPusher($value)
+    {
+        return $this->where('is_pusher',$value);
+    }
 }

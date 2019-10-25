@@ -19,8 +19,7 @@ class AdminRequest extends FormRequest
                 'true_name' => 'required',
                 'username' => ['required', 'unique:admins,id,'.$this->id, new MobileRule()],
                 'status' => 'required | int',
-                'roles_id' => 'required | array',
-                'permissions' => 'required | array'
+                'roles_id' => 'required | array'
             ];
 
         }else{
@@ -29,8 +28,7 @@ class AdminRequest extends FormRequest
                 'true_name' => 'required',
                 'username' => ['required', 'unique:admins', new MobileRule()],
                 'status' => 'required | int',
-                'roles_id' => 'required | array',
-                'permissions' => 'required | array'
+                'roles_id' => 'required | array'
             ];
 
         }

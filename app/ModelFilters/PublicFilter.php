@@ -28,4 +28,14 @@ class PublicFilter extends ModelFilter
 
     }
 
+    public function mobile($value)
+    {
+        return $this->related('user', 'mobile', 'like', '%'.$value.'%');
+    }
+
+    public function nickname($value)
+    {
+        return $this->related('user', 'nickname', 'like', '%'.$value.'%');
+    }
+
 }

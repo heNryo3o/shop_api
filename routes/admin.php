@@ -78,6 +78,8 @@ Route::post('/upload/change-status','UploadController@changeStatus');
 Route::get('/user/index','UserController@index');
 Route::get('/user/logs','UserController@logs');
 
+Route::get('/user/info','UserController@info');
+
 Route::post('/user/create','UserController@create');
 Route::post('/user/edit','UserController@edit');
 Route::post('/user/destroy','UserController@destroy');
@@ -111,5 +113,12 @@ Route::get('/user/pushers','UserController@pushers');
 Route::post('/user/pusher-add','UserController@pusherAdd');
 
 Route::get('/account/pay-log','AccountController@payLog');
+
+Route::get('/order/index','OrderController@index');
+
+Route::get('/account/pusher-cash-index','AccountController@pusherCashIndex');
+Route::post('/account/pusher-cash-audit','AccountController@pusherCashAudit');
+Route::get('/account/store-cash-index','AccountController@storeCashIndex');
+Route::post('/account/store-cash-audit','AccountController@storeCashAudit');
 
 

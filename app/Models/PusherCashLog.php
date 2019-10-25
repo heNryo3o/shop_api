@@ -15,4 +15,9 @@ class PusherCashLog extends PublicModel
         'status'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

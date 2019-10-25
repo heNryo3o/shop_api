@@ -11,6 +11,8 @@ use App\Http\Resources\Admin\BackenPusherResource;
 use App\Http\Resources\Admin\UserLogResource;
 use App\Http\Resources\Admin\UserResource;
 use App\Models\BackenPusher;
+use App\Models\Product;
+use App\Models\PusherLog;
 use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
@@ -88,7 +90,11 @@ class UserController extends Controller
 
         $order_type = $request->input('order_type', 'desc');
 
-        $list = BackenPusher::where([])->orderBy($order_column, $order_type)->paginate($request->limit);
+        $query = BackenPusher::where([]);
+
+        $query = $request->mobile ? $query->where('mobile','like','%'.$request->mobile.'%') : $query;
+
+        $list = $query->orderBy($order_column, $order_type)->paginate($request->limit);
 
         return $this->success(BackenPusherResource::collection($list));
 
@@ -108,6 +114,37 @@ class UserController extends Controller
         }
 
         return $this->success();
+
+    }
+
+    public function info(Request $request)
+    {
+
+        $info = User::find($request->id)->toArray();
+
+        $info['childs'] = User::where(['parent_user_id'=>$request->id])->orderBy('id','desc')->get();
+
+        $info['childs'] = $info['childs'] ? $info['childs']->toArray() : [];
+
+        $info['logs'] = PusherLog::where(['push_user_id'=>$request->id])->orderBy('id','desc')->get();
+
+        if($info['logs']){
+
+            $logs = $info['logs']->toArray();
+
+            foreach ($logs as $k => &$v){
+
+                $v['product_name'] = Product::find($v['product_id'])->name;
+
+                $v['level_name'] = $v['level'] == 1 ? '直推' : '团推';
+
+            }
+
+            $info['logs'] = $logs;
+
+        }
+
+        return $this->success($info);
 
     }
 

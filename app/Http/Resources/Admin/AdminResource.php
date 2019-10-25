@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Models\Role;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminResource extends JsonResource
@@ -12,11 +13,21 @@ class AdminResource extends JsonResource
 
         $roles = $this->roles->toArray();
 
-        $permissions = $this->permissions->toArray();
-
         $roles_name = array_column($roles,'name');
 
         $roles_id = array_column($roles,'id');
+
+        $permissions = [];
+
+        $permission_list = Role::whereIn('id',$roles_id)->get();
+
+        if($permission_list){
+            foreach ($permission_list as $k => $v){
+                foreach ($v->permissions->toArray() as $vk => $vv){
+                    $permissions[] = $vv;
+                }
+            }
+        }
 
         $permissions_id = array_column($permissions,'id');
 
