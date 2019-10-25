@@ -89,9 +89,9 @@ Route::get('/user/cash-log','UserController@cashLog');   //线下核销页
 Route::post('/user/bind-area','UserController@bindArea');   //线下核销页
 
 Route::get('/order/coupons','OrderController@coupons');
+Route::get('/location/info','LocationController@info');
 
 Route::post('/order/bind-coupon','OrderController@bindCoupon');
-
 
 
 
