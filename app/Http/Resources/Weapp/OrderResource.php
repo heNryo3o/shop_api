@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Weapp;
 
+use App\Models\Coupon;
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,7 +31,9 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'mobile' => $this->mobile,
             'linkman' => $this->linkman,
-            'qr_src' => $this->qr_src
+            'qr_src' => $this->qr_src,
+            'coupon_money' => $this->coupon_id ? Coupon::find($this->coupon_id)->money : 0,
+            'coupon_id' => $this->coupon_id
         ];
 
     }
