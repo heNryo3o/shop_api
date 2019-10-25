@@ -280,11 +280,14 @@ class ProductController extends Controller
 
                 } else {
 
+                    $store = Store::find($v['store_id']);
+
                     $data[$v['store_id']] =
                         [
                             'checked' => false,
                             'shopId' => $v['store_id'],
-                            'shopName' => Store::find($v['store_id'])->name,
+                            'shopName' => $store->name,
+                            'is_online' => $store->is_online,
                             'items' => [
                                 [
                                     'checked' => false,
