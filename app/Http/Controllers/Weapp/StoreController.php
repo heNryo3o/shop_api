@@ -88,7 +88,7 @@ class StoreController extends Controller
     public function index(Request $request)
     {
 
-        $user = User::find(auth('weapp'))->id();
+        $user = User::find(auth('weapp')->id());
 
         $query = Store::where(['status'=>4,'is_online'=>2]);
 
