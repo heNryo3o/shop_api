@@ -111,6 +111,14 @@ class LocationController extends Controller
 
         $location->delete();
 
+        $count = Location::where(['user_id'=>auth('weapp')->id(),'is_default' => 1])->count();
+
+        if($count == 0){
+
+            Location::where(['user_id'=>auth('weapp')->id()])->orderBy('id','desc')->first()->update(['is_default' =>1]);
+
+        }
+
         return $this->success();
 
     }
