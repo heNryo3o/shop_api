@@ -14,8 +14,6 @@ class OrderResource extends JsonResource
 
         $store = Store::find($this->store_id);
 
-        $coupon_money = $this->coupon_id && Coupon::find($this->coupon_id)->status == 1 ? floatval(Coupon::find($this->coupon_id)->money) : 0;
-
         return [
             'id' => $this->id,
             'created_at' => $this->created_at->toDateTimeString(),
@@ -34,9 +32,9 @@ class OrderResource extends JsonResource
             'mobile' => $this->mobile,
             'linkman' => $this->linkman,
             'qr_src' => $this->qr_src,
-            'coupon_money' => $coupon_money,
             'coupon_id' => $this->coupon_id,
-            'real_pay' => floor(($this->total_amount - $coupon_money)*100)/100
+            'coupon_money' => $this->coupon_money,
+            'real_money' => $this->real_money
         ];
 
     }

@@ -65,9 +65,7 @@ class OrderController extends Controller
 
         if($order->use_coupon == 1){
 
-            $coupon = Coupon::find($order->coupon_id);
-
-            $amount = $amount - $coupon->money;
+            $amount = $order->real_money;
 
         }
 

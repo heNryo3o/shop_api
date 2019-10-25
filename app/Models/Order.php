@@ -199,7 +199,7 @@ class Order extends PublicModel
 
             if($coupon->status == 1){
 
-                $amount = $amount - $coupon->money;
+                $amount = $order->real_money;
 
             }
 

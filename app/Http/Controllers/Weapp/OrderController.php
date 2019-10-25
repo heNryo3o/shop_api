@@ -241,7 +241,7 @@ class OrderController extends Controller
 
             if($coupon->status == 1){
 
-                $amount = $amount - $coupon->money;
+                $amount = $order->real_money;
 
             }
 
@@ -279,7 +279,7 @@ class OrderController extends Controller
 
             if($coupon->status == 1){
 
-                $amount = $amount - $coupon->money < 0 ? 0 : $amount - $coupon->money;
+                $amount = $order->real_money;
 
                 $use_coupon = 1;
 
@@ -486,7 +486,15 @@ class OrderController extends Controller
 
         $order = Order::find($request->order_id);
 
-        $order->update(['coupon_id'=>$request->coupon_id]);
+        $coupon = Coupon::find($request->coupon_id);
+
+        $real_money = $order->total_amount - $coupon->money > 0 ? floor(($order->total_amount - $coupon->money)*100)/100 : 0;
+
+        $order->update([
+            'coupon_id'=>$request->coupon_id,
+            'real_money' => $real_money,
+            'coupon_money' => $coupon->money
+        ]);
 
         return $this->success();
 
