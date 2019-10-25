@@ -155,7 +155,29 @@ class OrderController extends Controller
             'status' => 1
         ];
 
-        $list = CartItem::whereIn('id', $request->cart_item_ids)->get()->toArray();
+        $cart_item_ids = $request->cart_item_ids;
+
+        if($request->store_id > 0){
+
+            // 过滤不同店铺的商品
+
+            $list = CartItem::whereIn('id', $cart_item_ids)->get()->toArray();
+
+            $cart_item_ids = [];
+
+            foreach ($list as $k => $v){
+
+                if($v['store_id'] == $request->store_id){
+
+                    $cart_item_ids[] = $v['id'];
+
+                }
+
+            }
+
+        }
+
+        $list = CartItem::whereIn('id', $cart_item_ids)->get()->toArray();
 
         foreach ($list as $k => $v) {
 
@@ -177,6 +199,8 @@ class OrderController extends Controller
 
             $sku = ProductSku::find($v['product_sku_id']);
 
+            $product = Product::find($v['product_id']);
+
             if($product->is_online == 1){
                 $sku->update(['stock' => ($sku->stock - $v['amount'])]);
             }
@@ -195,13 +219,15 @@ class OrderController extends Controller
 
             OrderItem::create($item_data);
 
+            if($product->is_online != 1){
+
+                (new Order())->generateQrCode($order->id);  // 生成二维码
+
+            }
+
         }
 
-        if($product->is_online != 1){
-
-            (new Order())->generateQrCode($order->id);  // 生成二维码
-
-        }
+        CartItem::whereIn('id', $cart_item_ids)->delete();
 
         return $this->success(['order_id' => $order->id]);
 
