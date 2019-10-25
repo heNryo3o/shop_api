@@ -28,7 +28,9 @@ class Order extends PublicModel
         'refund_start_at',
         'refund_end_at',
         'coupon_id',
-        'use_coupon'
+        'use_coupon',
+        'coupon_money',
+        'real_money'
     ];
 
     protected $appends = ['state','items','order_date','user_remain_money','qr_src'];

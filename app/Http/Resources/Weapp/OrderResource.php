@@ -34,7 +34,7 @@ class OrderResource extends JsonResource
             'qr_src' => $this->qr_src,
             'coupon_id' => $this->coupon_id,
             'coupon_money' => $this->coupon_money,
-            'real_money' => $this->real_money
+            'real_money' => $this->real_money ? $this->real_money : $this->total_amount
         ];
 
     }
