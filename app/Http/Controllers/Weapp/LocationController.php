@@ -54,7 +54,13 @@ class LocationController extends Controller
 
         $count = Location::where('user_id',auth('weapp')->id())->count();
 
-        $data['is_default'] = $count == 0 ? 1 : 2;
+        $data['is_default'] = $count == 0 || $request->is_default == 1 ? 1 : 2;
+
+        if($data['is_default'] == 1){
+
+            Location::where(['user_id'=>auth('weapp')->id()])->update(['is_default'=>2]);
+
+        }
 
         Location::create($data);
 
@@ -80,6 +86,12 @@ class LocationController extends Controller
 
         if($location->user_id != auth('weapp')->id()){
             return $this->failed('只能操作自己的地址');
+        }
+
+        if($request->is_default == 1){
+
+            Location::where(['user_id'=>auth('weapp')->id()])->update(['is_default'=>2]);
+
         }
 
         $location->update($request->all());
