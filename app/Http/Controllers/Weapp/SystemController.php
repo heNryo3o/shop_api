@@ -57,9 +57,8 @@ class SystemController extends Controller
 
         if(substr($request->username,0,4) == 'kefu'){
 
-            $store_id = str_replace($request->username,'kefu_','');
-var_dump($store_id);
-die;
+            $store_id = str_replace('kefu_','',$request->username);
+
             $avatar = Store::find($store_id)->logo;
 
             $response['body']['avatar'] = $avatar;
