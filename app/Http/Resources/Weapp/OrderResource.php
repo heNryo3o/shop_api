@@ -36,7 +36,7 @@ class OrderResource extends JsonResource
             'qr_src' => $this->qr_src,
             'coupon_money' => $coupon_money,
             'coupon_id' => $this->coupon_id,
-            'real_pay' => $this->total_amount - $coupon_money
+            'real_pay' => floor(($this->total_amount - $coupon_money)*100)/100
         ];
 
     }
