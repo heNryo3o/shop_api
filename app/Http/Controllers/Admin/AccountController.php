@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\Admin\CouponLogResource;
 use App\Http\Resources\Admin\PayLogResource;
 use App\Http\Resources\Admin\PusherCashLogResource;
 use App\Http\Resources\Admin\StoreCashLogResource;
+use App\Models\Coupon;
+use App\Models\CouponLog;
 use App\Models\PayLog;
 use App\Models\PusherCashLog;
 use App\Models\Store;
@@ -124,6 +127,40 @@ class AccountController extends Controller
             ]);
 
             $log->update(['status'=>3]);
+
+        }
+
+        return $this->success();
+
+    }
+
+    public function couponIndex(Request $request)
+    {
+
+        $list = CouponLog::filter($request->all())->orderBy('id','desc')->paginate($request->limit);
+
+        return $this->success(CouponLogResource::collection($list));
+
+    }
+
+    public function couponCreate(Request $request)
+    {
+
+        $money = $request->money;
+
+        CouponLog::create([
+            'money' => $money
+        ]);
+
+        $users = User::all()->toArray();
+
+        foreach ($users as $k => $v){
+
+            Coupon::create([
+                'user_id' => $v['id'],
+                'status' => 1,
+                'money' => $money
+            ]);
 
         }
 

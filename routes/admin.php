@@ -124,4 +124,5 @@ Route::post('/account/pusher-cash-audit','AccountController@pusherCashAudit');
 Route::get('/account/store-cash-index','AccountController@storeCashIndex');
 Route::post('/account/store-cash-audit','AccountController@storeCashAudit');
 
-
+Route::get('/account/coupon-index','AccountController@couponIndex');
+Route::post('/account/coupon-create','AccountController@couponCreate');

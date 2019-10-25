@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Weapp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Weapp\OrderResource;
 use App\Models\CartItem;
+use App\Models\Coupon;
 use App\Models\Deposit;
 use App\Models\DepositSetting;
 use App\Models\Evalue;
@@ -409,6 +410,15 @@ class OrderController extends Controller
         );
 
         return $this->success();
+
+    }
+
+    public function coupons(Request $request)
+    {
+
+        $coupons = Coupon::where(['user_id' => auth('weapp')->id()])->orderBy('id','desc')->get();
+
+        return $this->success(['list'=>$coupons]);
 
     }
 
