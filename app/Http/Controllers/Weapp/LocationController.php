@@ -100,7 +100,7 @@ class LocationController extends Controller
 
     }
 
-    public function delete(LocationRequest $request)
+    public function delete(Request $request)
     {
 
         $location = Location::find($request->id);
