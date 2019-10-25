@@ -90,7 +90,7 @@ Route::post('/user/bind-area','UserController@bindArea');   //线下核销页
 
 Route::get('/order/coupons','OrderController@coupons');
 
-Route::get('/order/bind-coupon','OrderController@bindCoupon');
+Route::post('/order/bind-coupon','OrderController@bindCoupon');
 
 
 
