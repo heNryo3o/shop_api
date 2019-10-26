@@ -8,7 +8,7 @@ class AutoRecieve extends Command {
 
     protected $name = 'auto_recieve';//命令名称
 
-    protected $description = '测试'; // 命令描述，没什么用
+    protected $description = '自动收货'; // 命令描述，没什么用
 
     /**
      * Execute the console command.
@@ -17,7 +17,7 @@ class AutoRecieve extends Command {
      */
     public function handle()
     {
-        log::info('test');
+        log::info('auto_recieve');
         // 功能代码写到这里
     }
 
