@@ -1,5 +1,6 @@
 <?php namespace App\Console\Commands;
 
+use App\Models\Order;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use Log;
@@ -17,8 +18,9 @@ class AutoRecieve extends Command {
      */
     public function handle()
     {
-        log::info('auto_recieve');
-        // 功能代码写到这里
+
+        (new Order())->autoRecieve();
+
     }
 
 }

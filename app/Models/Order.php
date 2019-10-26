@@ -35,6 +35,38 @@ class Order extends PublicModel
 
     protected $appends = ['state','items','order_date','user_remain_money','qr_src'];
 
+    public function autoRecieve()
+    {
+
+        $time = date('Y-m-d H:i:s',(time() - 86400*7));
+
+        $list = Order::where(['status' => 3])->where('send_at','<',$time)->get();
+
+        $list = $list ? $list->toArray() : [];
+
+        if($list){
+
+            foreach($list as $k => $v){
+
+                $order = Order::find($v['id']);
+
+                $order->update(
+                    [
+                        'finish_at' => now(),
+                        'status' => 4
+                    ]
+                );
+
+                $this->dealAfterRecieve($order);
+
+            }
+
+        }
+
+        return;
+
+    }
+
     public function dealAfterRecieve($order)
     {
 
