@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('auto_recieve')//Test.php中的name
-        ->everyFiveMinutes();//每五分钟执行一次
+        ->everyMinute();//每五分钟执行一次
     }
 
     /**
