@@ -107,9 +107,9 @@ class ProductController extends Controller
 
             $product['evalue'] = $evalue->toArray();
 
-            $product['evalue']['avatar'] = $evalue_user->avatar;
+            $product['evalue']['avatar'] = $evalue_user ? $evalue_user->avatar : '';
 
-            $product['evalue']['nickname'] = $evalue_user->nickname;
+            $product['evalue']['nickname'] = $evalue_user ? $evalue_user->nickname : '';
 
         } else {
 
