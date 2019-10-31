@@ -55,6 +55,10 @@ class ProductController extends Controller
                 return $this->failed('请完善商品规格信息');
             }
 
+            if(!is_numeric($v['price'])){
+                return $this->failed('商品价格必须是整数或小数');
+            }
+
             $exist_skus[] = $v['id'];
 
             $data['price'] = $data['price'] > $v['price'] || $data['price'] == 0 ? $v['price'] : $data['price'];
