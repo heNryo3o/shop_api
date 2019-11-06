@@ -98,7 +98,29 @@ class StoreController extends Controller
 
         $query = $request->sub_category_id > 0 ? $query->where('sub_category_id',$request->sub_category_id) : $query;
 
+        if($request->order_type > 0){
 
+            $sort_type = $request->order_type == 1 ? 'asc' : 'desc';
+
+            if($request->order == 1){
+
+                $query = $query->orderBy('sold',$sort_type)->orderBy('price',$sort_type);
+
+            }elseif($request->order == 2){
+
+                $query = $query->orderBy('sold',$sort_type);
+
+            }elseif($request->order == 3){
+
+                $query = $query->orderBy('price',$sort_type);
+
+            }elseif($request->order == 4){
+
+                $query = $query->orderBy('evalue',$sort_type);
+
+            }
+
+        }
 
         $list = $query->orderBy('id','desc')->paginate(12);
 
