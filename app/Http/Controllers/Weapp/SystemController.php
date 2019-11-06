@@ -27,7 +27,7 @@ class SystemController extends Controller
 
         $setting = Setting::find(1);
 
-        return $this->success(['list'=>$setting->banners,'single'=>$setting->ad_pic]);
+        return $this->success(['list'=>$setting->banners,'single'=>['pic'=>$setting->ad_pic,'type'=>$setting->ad_type,'target_id'=>$setting->ad_target_id]]);
 
     }
 
