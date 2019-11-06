@@ -12,7 +12,9 @@ class Setting extends PublicModel
         'ad_pic',
         'rate',
         'kefu',
-        'deposits'
+        'deposits',
+        'ad_target_id',
+        'ad_type'
     ];
 
     protected $casts = [

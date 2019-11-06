@@ -13,4 +13,9 @@ class CategoryFilter extends PublicFilter
 
     public $relations = [];
 
+    public function name($value)
+    {
+        return $this->whereLike('name',$value);
+    }
+
 }
