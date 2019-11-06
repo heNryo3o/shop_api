@@ -97,12 +97,20 @@ class CategoryController extends Controller
     }
 
 
-    public function parentOptions()
+    public function parentOptions(Request $request)
     {
 
         $data = [];
 
-        $parent = Category::where(['level'=>1])->remember(10080)->get(['id','name'])->toArray();
+        if($request->is_online == 1 || $request->is_online == 2){
+
+            $parent = Category::where(['level'=>1,'id'=>$request->is_online])->remember(10080)->get(['id','name'])->toArray();
+
+        }else{
+
+            $parent = Category::where(['level'=>1])->remember(10080)->get(['id','name'])->toArray();
+
+        }
 
         foreach ($parent as $k => $v){
 
