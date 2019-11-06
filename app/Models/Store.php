@@ -30,6 +30,7 @@ class Store extends PublicModel
         'is_online',
         'browse',
         'category_id',
+        'sub_category_id',
         'shangquan',
         'rate',
         'average_cost',

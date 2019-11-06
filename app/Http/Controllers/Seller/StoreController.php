@@ -30,6 +30,10 @@ class StoreController extends Controller
 
         $data['city'] = isset($data['area']['1']) ? $data['area']['1'] : 0;
 
+        $data['category_id'] = isset($data['category'][1]) ? $data['category'][1] : 0;
+
+        $data['sub_category_id'] = isset($data['category'][2]) ? $data['category'][2] : 0;
+
         $store = Store::create($data);
 
         $jim = new User(new JMessage(config('jim.key'), config('jim.secret')));

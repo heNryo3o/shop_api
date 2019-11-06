@@ -48,7 +48,13 @@ class StoreController extends Controller
     public function edit(StoreRequest $request)
     {
 
-        Store::find($request->id)->update($request->all());
+        $data = $request->all();
+
+        $data['category_id'] = isset($data['category'][1]) ? $data['category'][1] : 0;
+
+        $data['sub_category_id'] = isset($data['category'][2]) ? $data['category'][2] : 0;
+
+        Store::find($request->id)->update($data);
 
         return $this->success();
 
