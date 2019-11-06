@@ -96,6 +96,10 @@ class StoreController extends Controller
 
         $query = $request->category_id > 0 ? $query->where('category_id',$request->category_id) : $query;
 
+        $query = $request->sub_category_id > 0 ? $query->where('sub_category_id',$request->sub_category_id) : $query;
+
+
+
         $list = $query->orderBy('id','desc')->paginate(12);
 
         return $this->success(StoreResource::collection($list));
