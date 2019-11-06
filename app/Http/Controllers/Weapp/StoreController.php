@@ -104,7 +104,7 @@ class StoreController extends Controller
 
             if($request->order == 1){
 
-                $query = $query->orderBy('sold',$sort_type)->orderBy('price',$sort_type);
+                $query = $query->orderBy('sold',$sort_type)->orderBy('average_cost',$sort_type);
 
             }elseif($request->order == 2){
 
